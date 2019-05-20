@@ -1,0 +1,15 @@
+{
+  "sections": [
+    {
+      "color": "123",
+      "bind": "example",
+      "label": "Example",
+      "items": [
+        {
+          "label": "Example",
+          "url": "http://example.com"
+        }
+      ]
+    }
+  ]
+}
