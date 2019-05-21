@@ -54,6 +54,12 @@ html, body {
 .item:nth-child(even) { background-color: #fafafa; }
 .item:hover { background-color: #eee; }
 
+.item img {
+  position: absolute;
+  left: 0;
+  height: inherit;
+}
+
 .item a {
   color: black;
   display: block;
