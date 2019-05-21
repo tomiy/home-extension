@@ -37,14 +37,20 @@
     for (let i in sectionData.items) {
       let itemData = sectionData.items[i];
       let item = document.createElement('div');
+      let icon = document.createElement('img');
       let url = document.createElement('a');
 
       item.classList.add('item');
+
+      icon.src = 'https://favicons.githubusercontent.com/'+new URL(itemData.url).hostname;
+
+      console.log(icon);
 
       url.href = itemData.url;
       url.innerHTML = itemData.label;
       url.target = '_blank';
 
+      item.appendChild(icon);
       item.appendChild(url);
       items.appendChild(item);
     }
