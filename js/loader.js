@@ -44,8 +44,6 @@
 
       icon.src = 'https://favicons.githubusercontent.com/'+new URL(itemData.url).hostname;
 
-      console.log(icon);
-
       url.href = itemData.url;
       url.innerHTML = itemData.label;
       url.target = '_blank';
