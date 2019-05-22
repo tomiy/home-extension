@@ -39,10 +39,17 @@
       let item = document.createElement('div');
       let icon = document.createElement('img');
       let url = document.createElement('a');
+      let host;
+
+      try {
+        host = new URL(itemData.url);
+      } catch (e) {
+        host = new URL('http://example.com');
+      }
 
       item.classList.add('item');
 
-      icon.src = 'https://favicons.githubusercontent.com/'+new URL(itemData.url).hostname;
+      icon.src = 'https://favicons.githubusercontent.com/' + host.hostname;
 
       url.href = itemData.url;
       url.innerHTML = itemData.label;
@@ -89,6 +96,7 @@
       }
 
       cur.style.transform = null;
+      cur.style.zIndex = null;
       cur = null;
     }
   });
@@ -97,7 +105,8 @@
     if (cur) {
       offsetX = e.clientX - initial.x;
       offsetY = e.clientY - initial.y;
-      cur.style.transform = "translate3d(" + offsetX + "px, " + offsetY + "px, 0)";
+      cur.style.transform = 'translate3d(' + offsetX + 'px, ' + offsetY + 'px, 0)';
+      cur.style.zIndex = '1000';
     }
   });
 
@@ -106,7 +115,6 @@
       initial.x = e.clientX;
       initial.y = e.clientY;
       cur = item;
-      target = item.parentNode;
     });
   });
 })();
