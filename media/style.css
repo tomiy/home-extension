@@ -73,3 +73,8 @@ html, body {
   justify-content: center;
   align-content: space-between;
 }
+
+#previewer {
+  width: 750px;
+  height: 750px;
+}
