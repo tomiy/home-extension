@@ -1,5 +1,5 @@
 (async () => {
-  var data = localStorage.getItem('json');
+  let data = localStorage.getItem('json');
   if (!data) data = await (await fetch('./js/default.json')).text();
 
   data = JSON.parse(data);
