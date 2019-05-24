@@ -1,3 +1,26 @@
+const fElementsFromPoint = (x, y, l) => {
+  let element = document.elementFromPoint(x, y);
+  if (element !== l && element !== document.documentElement) {
+    element.style['pointerEvents'] = 'none';
+    let result = [element].concat(fElementsFromPoint(x, y, element));
+    element.style['pointerEvents'] = 'auto';
+    return result;
+  } else return [];
+};
+
+const rgblum = (rgb) => {
+  if(!rgb) return '#000';
+  rgb = rgb.substr(4, rgb.length - 5).split(',');
+  let lrgb = [];
+  rgb.forEach(c => {
+    let cx = c / 255;
+    if(cx <= 0.03928) lrgb.push(cx / 12.92);
+    else lrgb.push(Math.pow((cx + 0.055) / 1.055, 2.4));
+  });
+  let lum = 0.2126 * lrgb[0] + 0.7152 * lrgb[1] + 0.0722 * lrgb[2];
+  return lum > 0.179 ? '#000': '#fff';
+};
+
 (async () => {
   let data = localStorage.getItem('json');
   if (!data) data = await (await fetch('./js/default.json')).text();
@@ -29,6 +52,7 @@
     label.classList.add('label');
 
     if (sectionData.color) label.style.backgroundColor = `#${sectionData.color}`;
+    label.style.color = rgblum(label.style.backgroundColor);
 
     items.classList.add('items');
 
@@ -118,13 +142,3 @@
     });
   });
 })();
-
-const fElementsFromPoint = (x, y, l) => {
-  let element = document.elementFromPoint(x, y);
-  if (element !== l && element !== document.documentElement) {
-    element.style['pointerEvents'] = 'none';
-    let result = [element].concat(fElementsFromPoint(x, y, element));
-    element.style['pointerEvents'] = 'auto';
-    return result;
-  } else return [];
-};

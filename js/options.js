@@ -27,14 +27,7 @@
 
   newsection.addEventListener('click', function () {
     let json = JSON.parse(localStorage.getItem('json'));
-    json.sections.push({
-      bind: 'changeit',
-      label: 'Change it',
-      items: [{
-        label: 'Example item',
-        url: 'example.com'
-      }]
-    });
+    json.sections.push(JSON.parse(defaultJson).sections[0]);
     jsoneditor.value = JSON.stringify(json, null, 2);
     localStorage.setItem('json', JSON.stringify(json));
 

@@ -2,12 +2,12 @@
   "sections": [
     {
       "color": "123",
-      "bind": "example",
-      "label": "Example",
+      "bind": "changeit",
+      "label": "Change it",
       "items": [
         {
-          "label": "Example",
-          "url": "http://example.com"
+        "label": "Example item",
+        "url": "example.com"
         }
       ]
     }
