@@ -59,7 +59,7 @@ const load = async () => {
     
     items.classList.add('items');
     
-    if(env == "options") { //TODO: find a solution to mix drag and edit
+    if(env == "options") {
       labelcb.setAttribute('type', 'checkbox');
       labelcb.setAttribute('title', 'Enable drag and drop');
       labelcb.classList.add('labelcb');
