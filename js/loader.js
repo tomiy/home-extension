@@ -21,7 +21,9 @@ const rgblum = (rgb) => {
   return lum > 0.179 ? '#000': '#fff';
 };
 
-(async () => {
+const env = document.currentScript.getAttribute('env');
+
+const load = async () => {
   let data = localStorage.getItem('json');
   if (!data) data = await (await fetch('./js/default.json')).text();
 
@@ -32,6 +34,8 @@ const rgblum = (rgb) => {
     let sectionContainer = document.createElement('div');
     let section = document.createElement('div');
     let label = document.createElement('div');
+    let labelcb = document.createElement('input');
+    let labeltxt = document.createElement('span');
     let items = document.createElement('div');
 
 
@@ -47,14 +51,36 @@ const rgblum = (rgb) => {
 
     section.classList.add('section');
     section.classList.add('drag-item');
-
-    label.innerHTML = sectionData.label;
+    
     label.classList.add('label');
-
+    
     if (sectionData.color) label.style.backgroundColor = `#${sectionData.color}`;
     label.style.color = rgblum(label.style.backgroundColor);
-
+    
     items.classList.add('items');
+    
+    if(env == "options") { //TODO: find a solution to mix drag and edit
+      labelcb.setAttribute('type', 'checkbox');
+      labelcb.setAttribute('title', 'Enable drag and drop');
+      labelcb.classList.add('labelcb');
+      
+      section.appendChild(labelcb);
+      
+      labeltxt.contentEditable = true;
+      labeltxt.classList.add('labeltxt');
+      labeltxt.addEventListener('focus', (e) => {
+        labeltxt.dataset.old = labeltxt.innerHTML;
+      });
+      labeltxt.addEventListener('blur', (e) => {
+        if(labeltxt.dataset.old != labeltxt.innerHTML) {
+          console.log('changed'); //TODO: save
+        }
+      });
+      labeltxt.addEventListener('mousedown', (e) => e.stopPropagation());
+    }
+    
+    labeltxt.innerHTML = sectionData.label;
+    label.appendChild(labeltxt);
 
     section.appendChild(label);
 
@@ -75,9 +101,24 @@ const rgblum = (rgb) => {
 
       icon.src = 'https://favicons.githubusercontent.com/' + host.hostname;
 
-      url.href = itemData.url;
+      if(env == "popup") {
+        url.href = itemData.url;
+      }
+
       url.innerHTML = itemData.label;
       url.target = '_blank';
+
+      if(env == "options") {
+        url.contentEditable = true;
+        url.addEventListener('focus', (e) => {
+          url.dataset.old = url.innerHTML;
+        });
+        url.addEventListener('blur', (e) => {
+          if(url.dataset.old != url.innerHTML) {
+            console.log('changed'); //TODO: save
+          }
+        });
+      }
 
       item.appendChild(icon);
       item.appendChild(url);
@@ -141,4 +182,6 @@ const rgblum = (rgb) => {
       cur = item;
     });
   });
-})();
+};
+
+document.addEventListener('DOMContentLoaded', load);
