@@ -37,6 +37,22 @@ html, body {
   background-color: #acb;
 }
 
+.labelcb {
+  position: absolute;
+  left: 0;
+  top: 5px;
+  z-index: 1;
+}
+
+.labelcb:not(:checked) + .label {
+  pointer-events: none;
+}
+
+.labeltxt {
+  pointer-events: all;
+  cursor: pointer;
+}
+
 .items {
   max-height: 120px;
   overflow-y: auto;
