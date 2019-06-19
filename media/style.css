@@ -1,7 +1,3 @@
-html, body {
-  overflow: hidden;
-}
-
 .drag-container {
   position: relative;
   display: flex;
@@ -37,20 +33,10 @@ html, body {
   background-color: #acb;
 }
 
-.labelcb {
-  position: absolute;
-  left: 0;
-  top: 5px;
-  z-index: 1;
-}
-
-.labelcb:not(:checked) + .label {
-  pointer-events: none;
-}
-
-.labeltxt {
+.editabletxt {
   pointer-events: all;
   cursor: pointer;
+  border: 1px dotted #abc;
 }
 
 .items {
