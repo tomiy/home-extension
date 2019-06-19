@@ -21,6 +21,19 @@ const rgblum = (rgb) => {
   return lum > 0.179 ? '#000': '#fff';
 };
 
+const delegate = (element, _class, callback) => {
+  if(element.classList.contains(_class)) {
+    return callback(element);
+  }
+};
+
+const saveoldtxt = (text) => text.dataset.old = text.innerHTML;
+const savetxt = (text) => {
+  if(text.dataset.old != text.innerHTML) {
+    console.log('changed'); //TODO: save
+  }
+};
+
 const env = document.currentScript.getAttribute('env');
 
 const load = async () => {
@@ -61,15 +74,8 @@ const load = async () => {
     if(env == "options") {
       labeltxt.contentEditable = true;
       labeltxt.classList.add('editabletxt');
-      labeltxt.addEventListener('focus', (e) => {
-        labeltxt.dataset.old = labeltxt.innerHTML;
-      });
-      labeltxt.addEventListener('blur', (e) => {
-        if(labeltxt.dataset.old != labeltxt.innerHTML) {
-          console.log('changed'); //TODO: save
-        }
-      });
-      labeltxt.addEventListener('mousedown', (e) => e.stopPropagation());
+      labeltxt.addEventListener('focus', (e) => saveoldtxt(e.target));
+      labeltxt.addEventListener('blur', (e) => savetxt(e.target));
     }
     
     labeltxt.innerHTML = sectionData.label;
@@ -101,14 +107,8 @@ const load = async () => {
       if(env == "options") {
         urltxt.contentEditable = true;
         urltxt.classList.add('editabletxt');
-        urltxt.addEventListener('focus', (e) => {
-          urltxt.dataset.old = urltxt.innerHTML;
-        });
-        urltxt.addEventListener('blur', (e) => {
-          if(urltxt.dataset.old != urltxt.innerHTML) {
-            console.log('changed'); //TODO: save
-          }
-        });
+        urltxt.addEventListener('focus', (e) => saveoldtxt(e.target));
+        urltxt.addEventListener('blur', (e) => savetxt(e.target));
         urltxt.addEventListener('click', (e) => e.preventDefault());
       }
 
@@ -125,7 +125,6 @@ const load = async () => {
     container.appendChild(sectionContainer);
   }
 
-  let items = [...document.querySelectorAll('.drag-item')];
   let cur = null;
   let initial = {
     x: 0,
@@ -170,11 +169,11 @@ const load = async () => {
     }
   });
 
-  items.forEach(item => {
-    item.querySelector('.label').addEventListener('mousedown', e => {
+  document.addEventListener('mousedown', e => {
+    delegate(e.target, 'label', (label) => {
       initial.x = e.clientX;
       initial.y = e.clientY;
-      cur = item;
+      cur = label.parentNode;
     });
   });
 };
