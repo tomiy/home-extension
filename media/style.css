@@ -36,7 +36,10 @@
 .editabletxt {
   pointer-events: all;
   cursor: pointer;
-  border: 1px dotted #abc;
+}
+
+.editabletxt::before {
+  content: "✏";
 }
 
 .items {
