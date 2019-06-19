@@ -34,7 +34,6 @@ const load = async () => {
     let sectionContainer = document.createElement('div');
     let section = document.createElement('div');
     let label = document.createElement('div');
-    let labelcb = document.createElement('input');
     let labeltxt = document.createElement('span');
     let items = document.createElement('div');
 
@@ -60,14 +59,8 @@ const load = async () => {
     items.classList.add('items');
     
     if(env == "options") {
-      labelcb.setAttribute('type', 'checkbox');
-      labelcb.setAttribute('title', 'Enable drag and drop');
-      labelcb.classList.add('labelcb');
-      
-      section.appendChild(labelcb);
-      
       labeltxt.contentEditable = true;
-      labeltxt.classList.add('labeltxt');
+      labeltxt.classList.add('editabletxt');
       labeltxt.addEventListener('focus', (e) => {
         labeltxt.dataset.old = labeltxt.innerHTML;
       });
@@ -81,44 +74,46 @@ const load = async () => {
     
     labeltxt.innerHTML = sectionData.label;
     label.appendChild(labeltxt);
-
+    
     section.appendChild(label);
-
+    
     for (let i in sectionData.items) {
       let itemData = sectionData.items[i];
       let item = document.createElement('div');
       let icon = document.createElement('img');
       let url = document.createElement('a');
+      let urltxt = document.createElement('span');
       let host;
-
+      
       try {
         host = new URL(itemData.url);
       } catch (e) {
         host = new URL('http://example.com');
       }
-
+      
       item.classList.add('item');
-
+      
       icon.src = 'https://favicons.githubusercontent.com/' + host.hostname;
-
-      if(env == "popup") {
-        url.href = itemData.url;
-      }
-
-      url.innerHTML = itemData.label;
+      
+      url.href = itemData.url;
       url.target = '_blank';
-
+      
       if(env == "options") {
-        url.contentEditable = true;
-        url.addEventListener('focus', (e) => {
-          url.dataset.old = url.innerHTML;
+        urltxt.contentEditable = true;
+        urltxt.classList.add('editabletxt');
+        urltxt.addEventListener('focus', (e) => {
+          urltxt.dataset.old = urltxt.innerHTML;
         });
-        url.addEventListener('blur', (e) => {
-          if(url.dataset.old != url.innerHTML) {
+        urltxt.addEventListener('blur', (e) => {
+          if(urltxt.dataset.old != urltxt.innerHTML) {
             console.log('changed'); //TODO: save
           }
         });
+        urltxt.addEventListener('click', (e) => e.preventDefault());
       }
+
+      urltxt.innerHTML = itemData.label;
+      url.appendChild(urltxt);
 
       item.appendChild(icon);
       item.appendChild(url);
