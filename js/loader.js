@@ -1,70 +1,86 @@
-var data;
+const env = document.currentScript.getAttribute('env');
 
-const fElementsFromPoint = (x, y, l) => {
+var data;
+var defaultdata = `{
+  "sections": [
+    {
+      "color": "123",
+      "bind": "changeit",
+      "label": "Change it",
+      "items": [
+        {
+        "label": "Example item",
+        "url": "example.com"
+        }
+      ]
+    }
+  ]
+}`;
+
+const elementsFromPoint = (x, y, l) => {
   let element = document.elementFromPoint(x, y);
   if (element !== l && element !== document.documentElement) {
     element.style['pointerEvents'] = 'none';
-    let result = [element].concat(fElementsFromPoint(x, y, element));
+    let result = [element].concat(elementsFromPoint(x, y, element));
     element.style['pointerEvents'] = 'auto';
     return result;
   } else return [];
 };
 
 const rgblum = (rgb) => {
-  if(!rgb) return '#000';
+  if (!rgb) return '#000';
   rgb = rgb.substr(4, rgb.length - 5).split(',');
   let lrgb = [];
   rgb.forEach(c => {
     let cx = c / 255;
-    if(cx <= 0.03928) lrgb.push(cx / 12.92);
+    if (cx <= 0.03928) lrgb.push(cx / 12.92);
     else lrgb.push(Math.pow((cx + 0.055) / 1.055, 2.4));
   });
   let lum = 0.2126 * lrgb[0] + 0.7152 * lrgb[1] + 0.0722 * lrgb[2];
-  return lum > 0.179 ? '#000': '#fff';
+  return lum > 0.179 ? '#000' : '#fff';
 };
 
+const getNodeIndex = (element) => [...element.parentNode.childNodes].indexOf(element);
 const delegate = (element, _class, callback) => {
-  if(element.classList.contains(_class)) {
+  if (element.classList.contains(_class)) {
     return callback(element);
   }
 };
 
-const getNodeIndex = (element) => [...element.parentNode.childNodes].indexOf(element);
+const _sectionid = (sectionname) => Object.keys(data.sections).filter(i => data.sections[i].bind == sectionname);
+const _section = (sectionname) => data.sections[_sectionid(sectionname)[0]];
 
 const saveoldtxt = (text) => text.dataset.old = text.innerHTML;
 const savetxt = (text) => {
-  if(text.dataset.old != text.innerHTML) {
-    let sectionid, itemindex;
-    section = (sectionid) => data.sections[
-      Object.keys(data.sections).filter(i => data.sections[i].bind == sectionid)[0]
-    ];
-    if(!!text.closest('.item')) {
-      sectionid = text.closest('.section-container').id;
+  if (text.dataset.old != text.innerHTML) {
+    let sectionid = text.closest('.section-container').id, itemindex;
+    if (!!text.closest('.item')) {
       itemindex = getNodeIndex(text.closest('.item'));
-      section(sectionid).items[itemindex].label = text.innerHTML;
+      _section(sectionid).items[itemindex].label = text.innerHTML;
     } else {
-      sectionid = text.closest('.section-container').id;
-      section(sectionid).label = text.innerHTML;
+      _section(sectionid).label = text.innerHTML;
     }
 
     localStorage.setItem('json', JSON.stringify(data));
   }
 };
 
-const env = document.currentScript.getAttribute('env');
-
-const load = async () => {
+const load = () => {
   data = localStorage.getItem('json');
-  if (!data) data = await (await fetch('./js/default.json')).text();
+  if (!data) data = defaultdata;
 
   data = JSON.parse(data);
 
   for (let k in data.sections) {
     let sectionData = data.sections[k];
+
     let sectionContainer = document.createElement('div');
     let section = document.createElement('div');
+    
     let label = document.createElement('div');
     let labeltxt = document.createElement('span');
+    let labeldel = document.createElement('span');
+
     let items = document.createElement('div');
 
 
@@ -80,26 +96,41 @@ const load = async () => {
 
     section.classList.add('section');
     section.classList.add('drag-item');
-    
+
     label.classList.add('label');
-    
+
     if (sectionData.color) label.style.backgroundColor = `#${sectionData.color}`;
     label.style.color = rgblum(label.style.backgroundColor);
-    
+
     items.classList.add('items');
-    
-    if(env == "options") {
+
+    if (env == "options") {
       labeltxt.contentEditable = true;
       labeltxt.classList.add('editabletxt');
       labeltxt.addEventListener('focus', (e) => saveoldtxt(e.target));
       labeltxt.addEventListener('blur', (e) => savetxt(e.target));
+
+      labeldel.classList.add('delete');
+      labeldel.addEventListener('click', (e) => {
+        if(confirm("Are you sure you want to delete?")) {
+          let sectionname = e.target.closest('.section-container').id;
+          
+          document.querySelector(`#${sectionname}`).remove();
+
+          sectionid = _sectionid(sectionname);
+          data.sections.splice(sectionid, 1);
+
+          localStorage.setItem('json', JSON.stringify(data));
+        }
+      });
+      label.appendChild(labeldel);
     }
-    
+
     labeltxt.innerHTML = sectionData.label;
     label.appendChild(labeltxt);
-    
+
     section.appendChild(label);
-    
+
     for (let i in sectionData.items) {
       let itemData = sectionData.items[i];
       let item = document.createElement('div');
@@ -107,21 +138,21 @@ const load = async () => {
       let url = document.createElement('a');
       let urltxt = document.createElement('span');
       let host;
-      
+
       try {
         host = new URL(itemData.url);
       } catch (e) {
         host = new URL('http://example.com');
       }
-      
+
       item.classList.add('item');
-      
+
       icon.src = 'https://favicons.githubusercontent.com/' + host.hostname;
-      
+
       url.href = itemData.url;
       url.target = '_blank';
-      
-      if(env == "options") {
+
+      if (env == "options") {
         urltxt.contentEditable = true;
         urltxt.classList.add('editabletxt');
         urltxt.addEventListener('focus', (e) => saveoldtxt(e.target));
@@ -153,7 +184,7 @@ const load = async () => {
 
       let curRect = cur.getBoundingClientRect();
       let target =
-        fElementsFromPoint(curRect.left + curRect.width / 2, curRect.top + curRect.height / 2)
+        elementsFromPoint(curRect.left + curRect.width / 2, curRect.top + curRect.height / 2)
           .filter(el => el.matches('.drag-container')).pop();
       if (target) {
 
