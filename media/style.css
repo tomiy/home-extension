@@ -34,12 +34,23 @@
 }
 
 .editabletxt {
-  pointer-events: all;
   cursor: pointer;
 }
 
 .editabletxt::before {
-  content: "✏";
+  content: "✎ ";
+}
+
+.delete::before {
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  width: 30px;
+  font-size: 20px;
+  content: "✖";
+  color: red;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
 }
 
 .items {
