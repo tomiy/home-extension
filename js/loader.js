@@ -1,3 +1,5 @@
+var data;
+
 const fElementsFromPoint = (x, y, l) => {
   let element = document.elementFromPoint(x, y);
   if (element !== l && element !== document.documentElement) {
@@ -27,17 +29,32 @@ const delegate = (element, _class, callback) => {
   }
 };
 
+const getNodeIndex = (element) => [...element.parentNode.childNodes].indexOf(element);
+
 const saveoldtxt = (text) => text.dataset.old = text.innerHTML;
 const savetxt = (text) => {
   if(text.dataset.old != text.innerHTML) {
-    console.log('changed'); //TODO: save
+    let sectionid, itemindex;
+    section = (sectionid) => data.sections[
+      Object.keys(data.sections).filter(i => data.sections[i].bind == sectionid)[0]
+    ];
+    if(!!text.closest('.item')) {
+      sectionid = text.closest('.section-container').id;
+      itemindex = getNodeIndex(text.closest('.item'));
+      section(sectionid).items[itemindex].label = text.innerHTML;
+    } else {
+      sectionid = text.closest('.section-container').id;
+      section(sectionid).label = text.innerHTML;
+    }
+
+    localStorage.setItem('json', JSON.stringify(data));
   }
 };
 
 const env = document.currentScript.getAttribute('env');
 
 const load = async () => {
-  let data = localStorage.getItem('json');
+  data = localStorage.getItem('json');
   if (!data) data = await (await fetch('./js/default.json')).text();
 
   data = JSON.parse(data);
