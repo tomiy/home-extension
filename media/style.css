@@ -16,12 +16,17 @@
 }
 
 .section {
+  transition: box-shadow 0.1s; 
   text-align: center;
   width: inherit;
   height: inherit;
   border: 2px solid #abc;
   border-radius: 3px;
   background: repeating-linear-gradient(45deg, #ccc, #ccc 5px, #ddd 5px, #ddd 10px);
+}
+
+.section:active {
+  box-shadow: 0px 10px 5px 0px rgba(0,0,0,0.5);
 }
 
 .label {
