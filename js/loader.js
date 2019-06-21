@@ -27,7 +27,7 @@ const elementsFromPoint = (x, y, l) => {
   } else return [];
 };
 
-const rgblum = (rgb) => {
+const rgblum = rgb => {
   if (!rgb) return '#000';
   rgb = rgb.substr(4, rgb.length - 5).split(',');
   let lrgb = [];
@@ -40,18 +40,18 @@ const rgblum = (rgb) => {
   return lum > 0.179 ? '#000' : '#fff';
 };
 
-const getNodeIndex = (element) => [...element.parentNode.childNodes].indexOf(element);
+const getNodeIndex = element => [...element.parentNode.childNodes].indexOf(element);
 const delegate = (element, _class, callback) => {
   if (element.classList.contains(_class)) {
     return callback(element);
   }
 };
 
-const _sectionid = (sectionname) => Object.keys(data.sections).filter(i => data.sections[i].bind == sectionname);
-const _section = (sectionname) => data.sections[_sectionid(sectionname)[0]];
+const _sectionid = sectionname => Object.keys(data.sections).filter(i => data.sections[i].bind == sectionname)[0];
+const _section = sectionname => data.sections[_sectionid(sectionname)];
 
-const saveoldtxt = (text) => text.dataset.old = text.innerHTML;
-const savetxt = (text) => {
+const saveoldtxt = text => text.dataset.old = text.innerHTML;
+const savetxt = text => {
   if (text.dataset.old != text.innerHTML) {
     let sectionid = text.closest('.section-container').id, itemindex;
     if (!!text.closest('.item')) {
@@ -61,6 +61,23 @@ const savetxt = (text) => {
       _section(sectionid).label = text.innerHTML;
     }
 
+    localStorage.setItem('json', JSON.stringify(data));
+  }
+};
+
+const eldelete = element => {
+  if (confirm("Are you sure you want to delete?")) {
+    let sectionname = element.closest('.section-container').id, itemindex;
+    let sectionid = _sectionid(sectionname);
+    if (!!element.closest('.item')) {
+      let itemindex = getNodeIndex(e.target.closest('.item'));
+      document.querySelector(`#${sectionname} .item:nth-child(${itemindex+1})`).remove();
+      data.sections[sectionid].items.splice(itemindex, 1);
+    } else {
+      document.querySelector(`#${sectionname}`).remove();
+      data.sections.splice(sectionid, 1);
+    }
+    
     localStorage.setItem('json', JSON.stringify(data));
   }
 };
@@ -76,7 +93,7 @@ const load = () => {
 
     let sectionContainer = document.createElement('div');
     let section = document.createElement('div');
-    
+
     let label = document.createElement('div');
     let labeltxt = document.createElement('span');
     let labeldel = document.createElement('span');
@@ -107,22 +124,11 @@ const load = () => {
     if (env == "options") {
       labeltxt.contentEditable = true;
       labeltxt.classList.add('editabletxt');
-      labeltxt.addEventListener('focus', (e) => saveoldtxt(e.target));
-      labeltxt.addEventListener('blur', (e) => savetxt(e.target));
+      labeltxt.addEventListener('focus', e => saveoldtxt(e.target));
+      labeltxt.addEventListener('blur', e => savetxt(e.target));
 
       labeldel.classList.add('delete');
-      labeldel.addEventListener('click', (e) => {
-        if(confirm("Are you sure you want to delete?")) {
-          let sectionname = e.target.closest('.section-container').id;
-          
-          document.querySelector(`#${sectionname}`).remove();
-
-          sectionid = _sectionid(sectionname);
-          data.sections.splice(sectionid, 1);
-
-          localStorage.setItem('json', JSON.stringify(data));
-        }
-      });
+      labeldel.addEventListener('click', e => eldelete(e.target));
       label.appendChild(labeldel);
     }
 
@@ -137,6 +143,7 @@ const load = () => {
       let icon = document.createElement('img');
       let url = document.createElement('a');
       let urltxt = document.createElement('span');
+      let urldel = document.createElement('span');
       let host;
 
       try {
@@ -155,9 +162,15 @@ const load = () => {
       if (env == "options") {
         urltxt.contentEditable = true;
         urltxt.classList.add('editabletxt');
-        urltxt.addEventListener('focus', (e) => saveoldtxt(e.target));
-        urltxt.addEventListener('blur', (e) => savetxt(e.target));
-        urltxt.addEventListener('click', (e) => e.preventDefault());
+        urltxt.addEventListener('focus', e => saveoldtxt(e.target));
+        urltxt.addEventListener('blur', e => savetxt(e.target));
+        urltxt.addEventListener('click', e => e.preventDefault());
+        
+        urldel.classList.add('delete');
+        urldel.addEventListener('click', e => eldelete(e.target));
+        urldel.addEventListener('click', e => e.preventDefault());
+
+        url.appendChild(urldel);
       }
 
       urltxt.innerHTML = itemData.label;
@@ -218,7 +231,7 @@ const load = () => {
   });
 
   document.addEventListener('mousedown', e => {
-    delegate(e.target, 'label', (label) => {
+    delegate(e.target, 'label', label => {
       initial.x = e.clientX;
       initial.y = e.clientY;
       cur = label.parentNode;
