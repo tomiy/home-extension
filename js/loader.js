@@ -41,9 +41,10 @@ const rgblum = rgb => {
 };
 
 const getNodeIndex = element => [...element.parentNode.childNodes].indexOf(element);
-const delegate = (element, _class, callback) => {
-  if (element.classList.contains(_class)) {
-    return callback(element);
+const delegate = (ev, _class, callback) => {
+  let target = elementsFromPoint(ev.clientX, ev.clientY).filter(el => el.matches(`.${_class}`));
+  if (target.length) {
+    return callback(target.pop());
   }
 };
 
@@ -70,7 +71,7 @@ const eldelete = element => {
     let sectionname = element.closest('.section-container').id, itemindex;
     let sectionid = _sectionid(sectionname);
     if (!!element.closest('.item')) {
-      let itemindex = getNodeIndex(e.target.closest('.item'));
+      itemindex = getNodeIndex(e.target.closest('.item'));
       document.querySelector(`#${sectionname} .item:nth-child(${itemindex+1})`).remove();
       data.sections[sectionid].items.splice(itemindex, 1);
     } else {
@@ -192,7 +193,7 @@ const load = () => {
     y: 0
   }
 
-  document.addEventListener('mouseup', () => {
+  document.addEventListener('mouseup', e => {
     if (cur) {
 
       let curRect = cur.getBoundingClientRect();
@@ -231,7 +232,7 @@ const load = () => {
   });
 
   document.addEventListener('mousedown', e => {
-    delegate(e.target, 'label', label => {
+    delegate(e, 'label', label => {
       initial.x = e.clientX;
       initial.y = e.clientY;
       cur = label.parentNode;
