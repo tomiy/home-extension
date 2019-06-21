@@ -47,13 +47,22 @@
 }
 
 .delete::before {
+  content: "✖";
+  color: #faa;
+  right: 0;
+}
+
+.add::before {
+  content: "➕";
+  color: #afa;
+  left: 0;
+}
+
+.delete::before, .add::before {
   cursor: pointer;
   position: absolute;
-  right: 0;
   width: 30px;
-  font-size: 15px;
-  content: "✖";
-  color: red;
+  font-size: 1.2em;
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: black;
 }
