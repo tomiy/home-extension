@@ -83,6 +83,98 @@ const eldelete = element => {
   }
 };
 
+const createitem = itemdata => {
+  let item = document.createElement('div');
+  let icon = document.createElement('img');
+  let url = document.createElement('a');
+  let urltxt = document.createElement('span');
+  let urldel = document.createElement('span');
+  let host;
+
+  try {
+    host = new URL(itemdata.url);
+  } catch (e) {
+    host = new URL('http://example.com');
+  }
+
+  item.classList.add('item');
+
+  icon.src = 'https://favicons.githubusercontent.com/' + host.hostname;
+
+  url.href = itemdata.url;
+  url.target = '_blank';
+
+  if (env == "options") {
+    urltxt.contentEditable = true;
+    urltxt.classList.add('editabletxt');
+    urltxt.addEventListener('focus', e => saveoldtxt(e.target));
+    urltxt.addEventListener('blur', e => savetxt(e.target));
+    urltxt.addEventListener('click', e => e.preventDefault());
+    
+    urldel.classList.add('delete');
+    urldel.addEventListener('click', e => eldelete(e.target));
+    urldel.addEventListener('click', e => e.preventDefault());
+    
+    url.appendChild(urldel);
+  }
+  
+  urltxt.innerHTML = itemdata.label;
+  url.appendChild(urltxt);
+  
+  item.appendChild(icon);
+  item.appendChild(url);
+  
+  return item;
+};
+
+const createsection = sectiondata => {
+  let section = document.createElement('div');
+  
+  let label = document.createElement('div');
+  let labeltxt = document.createElement('span');
+  let labeldel = document.createElement('span');
+  let labeladd = document.createElement('span');
+  
+  if (!localStorage.getItem(sectiondata.bind)) {
+    localStorage.setItem(sectiondata.bind, parseInt(localStorage.length) + 1);
+  }
+  
+  section.classList.add('section');
+  section.classList.add('drag-item');
+  
+  label.classList.add('label');
+  
+  if (sectiondata.color) label.style.backgroundColor = `#${sectiondata.color}`;
+  label.style.color = rgblum(label.style.backgroundColor);
+  
+  if (env == "options") {
+    labeltxt.contentEditable = true;
+    labeltxt.classList.add('editabletxt');
+    labeltxt.addEventListener('focus', e => saveoldtxt(e.target));
+    labeltxt.addEventListener('blur', e => savetxt(e.target));
+    labeltxt.addEventListener('mousedown', e => e.stopPropagation());
+    
+    labeldel.classList.add('delete');
+    labeldel.addEventListener('click', e => eldelete(e.target));
+    labeldel.addEventListener('mousedown', e => e.stopPropagation());
+    label.appendChild(labeldel);
+    
+    labeladd.classList.add('add');
+    labeladd.addEventListener('click', e => {
+      //add
+    });
+    labeladd.addEventListener('mousedown', e => e.stopPropagation());
+    label.appendChild(labeladd);
+  }
+  
+  labeltxt.innerHTML = sectiondata.label;
+  label.appendChild(labeltxt);
+
+  section.appendChild(label);
+  
+  return section;
+};
+
 const load = () => {
   data = localStorage.getItem('json');
   if (!data) data = defaultdata;
@@ -90,95 +182,23 @@ const load = () => {
   data = JSON.parse(data);
 
   for (let k in data.sections) {
-    let sectionData = data.sections[k];
+    let sectiondata = data.sections[k];
 
     let sectionContainer = document.createElement('div');
-    let section = document.createElement('div');
-
-    let label = document.createElement('div');
-    let labeltxt = document.createElement('span');
-    let labeldel = document.createElement('span');
-
+    let section = createsection(sectiondata);
     let items = document.createElement('div');
-
-
-    if (!localStorage.getItem(sectionData.bind)) {
-      localStorage.setItem(sectionData.bind, parseInt(localStorage.length) + 1);
-    }
 
     sectionContainer.classList.add('drag-container');
     sectionContainer.classList.add('section-container');
-    sectionContainer.id = sectionData.bind;
-    sectionContainer.style.order = localStorage.getItem(sectionData.bind);
-    sectionContainer.dataset.order = localStorage.getItem(sectionData.bind);
-
-    section.classList.add('section');
-    section.classList.add('drag-item');
-
-    label.classList.add('label');
-
-    if (sectionData.color) label.style.backgroundColor = `#${sectionData.color}`;
-    label.style.color = rgblum(label.style.backgroundColor);
+    sectionContainer.id = sectiondata.bind;
+    sectionContainer.style.order = localStorage.getItem(sectiondata.bind);
+    sectionContainer.dataset.order = localStorage.getItem(sectiondata.bind);
 
     items.classList.add('items');
 
-    if (env == "options") {
-      labeltxt.contentEditable = true;
-      labeltxt.classList.add('editabletxt');
-      labeltxt.addEventListener('focus', e => saveoldtxt(e.target));
-      labeltxt.addEventListener('blur', e => savetxt(e.target));
-
-      labeldel.classList.add('delete');
-      labeldel.addEventListener('click', e => eldelete(e.target));
-      label.appendChild(labeldel);
-    }
-
-    labeltxt.innerHTML = sectionData.label;
-    label.appendChild(labeltxt);
-
-    section.appendChild(label);
-
-    for (let i in sectionData.items) {
-      let itemData = sectionData.items[i];
-      let item = document.createElement('div');
-      let icon = document.createElement('img');
-      let url = document.createElement('a');
-      let urltxt = document.createElement('span');
-      let urldel = document.createElement('span');
-      let host;
-
-      try {
-        host = new URL(itemData.url);
-      } catch (e) {
-        host = new URL('http://example.com');
-      }
-
-      item.classList.add('item');
-
-      icon.src = 'https://favicons.githubusercontent.com/' + host.hostname;
-
-      url.href = itemData.url;
-      url.target = '_blank';
-
-      if (env == "options") {
-        urltxt.contentEditable = true;
-        urltxt.classList.add('editabletxt');
-        urltxt.addEventListener('focus', e => saveoldtxt(e.target));
-        urltxt.addEventListener('blur', e => savetxt(e.target));
-        urltxt.addEventListener('click', e => e.preventDefault());
-        
-        urldel.classList.add('delete');
-        urldel.addEventListener('click', e => eldelete(e.target));
-        urldel.addEventListener('click', e => e.preventDefault());
-
-        url.appendChild(urldel);
-      }
-
-      urltxt.innerHTML = itemData.label;
-      url.appendChild(urltxt);
-
-      item.appendChild(icon);
-      item.appendChild(url);
+    for (let i in sectiondata.items) {
+      let itemdata = sectiondata.items[i];
+      item = createitem(itemdata);
       items.appendChild(item);
     }
 
@@ -191,7 +211,7 @@ const load = () => {
   let initial = {
     x: 0,
     y: 0
-  }
+  };
 
   document.addEventListener('mouseup', e => {
     if (cur) {
