@@ -146,7 +146,20 @@ const createsection = sectiondata => {
     labeladd.classList.add('add');
     labeladd.classList.add('add-section');
     labeladd.addEventListener('click', e => {
-      //add
+      let prompturl;
+      if(prompturl = prompt('Enter a url for the new item', 'http://www.example.com/')) {
+        let section = e.target.closest('.section-container');
+        let itemobj = {
+          'label': prompturl,
+          'url': prompturl
+        };
+        let item = createitem(itemobj);
+        section.querySelector('.items').appendChild(item);
+        _section(section.id).items.push(itemobj);
+
+        localStorage.setItem('json', JSON.stringify(data));
+
+      }
     });
     label.appendChild(labeladd);
   }
