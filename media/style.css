@@ -66,6 +66,7 @@
 .items {
   max-height: 120px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .item {
@@ -90,6 +91,8 @@
   color: black;
   display: block;
   text-decoration: none;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 #container {
