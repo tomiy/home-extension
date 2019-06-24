@@ -47,14 +47,12 @@
 }
 
 .delete::before {
-  content: "✖";
-  color: #faa;
+  content: "❌";
   right: 0;
 }
 
 .add::before {
   content: "➕";
-  color: #afa;
   left: 0;
 }
 
@@ -63,8 +61,6 @@
   position: absolute;
   width: 30px;
   font-size: 1.2em;
-  -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: black;
 }
 
 .items {
