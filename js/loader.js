@@ -41,47 +41,36 @@ const rgblum = rgb => {
 };
 
 const getNodeIndex = element => [...element.parentNode.childNodes].indexOf(element);
-const delegate = (ev, _class, callback) => {
-  let target = elementsFromPoint(ev.clientX, ev.clientY).filter(el => el.matches(`.${_class}`));
-  if (target.length) {
-    return callback(target.pop());
+
+const classpresent = (el, classes) => {
+  let classpresent = false;
+  classes.forEach(c => {
+    if(el.matches(`.${c}`)) {
+      classpresent = true;
+    }
+  });
+  return classpresent;
+}
+
+const delegate = (ev, classes, callback) => {
+  let istarget, target;
+  if(ev instanceof MouseEvent) {
+    target = elementsFromPoint(ev.clientX, ev.clientY).filter(el => {
+      return classpresent(el, classes);
+    });
+    istarget = !!target.length;
+  } else {
+    target = [ev.target];
+    istarget = classpresent(target[0], classes);
   }
+  if(istarget) {
+    callback(target.pop(), ev);
+  }
+  return istarget;
 };
 
 const _sectionid = sectionname => Object.keys(data.sections).filter(i => data.sections[i].bind == sectionname)[0];
 const _section = sectionname => data.sections[_sectionid(sectionname)];
-
-const saveoldtxt = text => text.dataset.old = text.innerHTML;
-const savetxt = text => {
-  if (text.dataset.old != text.innerHTML) {
-    let sectionid = text.closest('.section-container').id, itemindex;
-    if (!!text.closest('.item')) {
-      itemindex = getNodeIndex(text.closest('.item'));
-      _section(sectionid).items[itemindex].label = text.innerHTML;
-    } else {
-      _section(sectionid).label = text.innerHTML;
-    }
-
-    localStorage.setItem('json', JSON.stringify(data));
-  }
-};
-
-const eldelete = element => {
-  if (confirm("Are you sure you want to delete?")) {
-    let sectionname = element.closest('.section-container').id, itemindex;
-    let sectionid = _sectionid(sectionname);
-    if (!!element.closest('.item')) {
-      itemindex = getNodeIndex(e.target.closest('.item'));
-      document.querySelector(`#${sectionname} .item:nth-child(${itemindex+1})`).remove();
-      data.sections[sectionid].items.splice(itemindex, 1);
-    } else {
-      document.querySelector(`#${sectionname}`).remove();
-      data.sections.splice(sectionid, 1);
-    }
-    
-    localStorage.setItem('json', JSON.stringify(data));
-  }
-};
 
 const createitem = itemdata => {
   let item = document.createElement('div');
@@ -107,13 +96,10 @@ const createitem = itemdata => {
   if (env == "options") {
     urltxt.contentEditable = true;
     urltxt.classList.add('editabletxt');
-    urltxt.addEventListener('focus', e => saveoldtxt(e.target));
-    urltxt.addEventListener('blur', e => savetxt(e.target));
-    urltxt.addEventListener('click', e => e.preventDefault());
+    urltxt.classList.add('editabletxt-item');
     
     urldel.classList.add('delete');
-    urldel.addEventListener('click', e => eldelete(e.target));
-    urldel.addEventListener('click', e => e.preventDefault());
+    urldel.classList.add('delete-item');
     
     url.appendChild(urldel);
   }
@@ -150,20 +136,17 @@ const createsection = sectiondata => {
   if (env == "options") {
     labeltxt.contentEditable = true;
     labeltxt.classList.add('editabletxt');
-    labeltxt.addEventListener('focus', e => saveoldtxt(e.target));
-    labeltxt.addEventListener('blur', e => savetxt(e.target));
-    labeltxt.addEventListener('mousedown', e => e.stopPropagation());
+    labeltxt.classList.add('editabletxt-section');
     
     labeldel.classList.add('delete');
-    labeldel.addEventListener('click', e => eldelete(e.target));
-    labeldel.addEventListener('mousedown', e => e.stopPropagation());
+    labeldel.classList.add('delete-section');
     label.appendChild(labeldel);
     
     labeladd.classList.add('add');
+    labeladd.classList.add('add-section');
     labeladd.addEventListener('click', e => {
       //add
     });
-    labeladd.addEventListener('mousedown', e => e.stopPropagation());
     label.appendChild(labeladd);
   }
   
@@ -252,10 +235,51 @@ const load = () => {
   });
 
   document.addEventListener('mousedown', e => {
-    delegate(e, 'label', label => {
+    if(delegate(e, ['editabletxt-section', 'delete-section', 'add-section'], (el, e) => e.stopPropagation())) return;
+    delegate(e, ['label'], (label, e) => {
       initial.x = e.clientX;
       initial.y = e.clientY;
       cur = label.parentNode;
+    });
+  });
+
+  document.addEventListener('click', e => {
+    delegate(e, ['editabletxt-item', 'delete-item', 'add-item'], (el, e) => e.preventDefault());
+    delegate(e, ['delete'], (el, e) => {
+      if (confirm("Are you sure you want to delete?")) {
+        let sectionname = el.closest('.section-container').id, itemindex;
+        let sectionid = _sectionid(sectionname);
+        if (!!el.closest('.item')) {
+          itemindex = getNodeIndex(e.target.closest('.item'));
+          document.querySelector(`#${sectionname} .item:nth-child(${itemindex+1})`).remove();
+          data.sections[sectionid].items.splice(itemindex, 1);
+        } else {
+          document.querySelector(`#${sectionname}`).remove();
+          data.sections.splice(sectionid, 1);
+        }
+        
+        localStorage.setItem('json', JSON.stringify(data));
+      }
+    });
+  });
+
+  document.addEventListener('focusin', e => {
+    delegate(e, ['editabletxt'], (el, e) => el.dataset.old = el.innerHTML);
+  });
+
+  document.addEventListener('focusout', e => {
+    delegate(e, ['editabletxt'], (el, e) => {
+      if (el.dataset.old != el.innerHTML) {
+        let sectionid = el.closest('.section-container').id, itemindex;
+        if (!!el.closest('.item')) {
+          itemindex = getNodeIndex(el.closest('.item'));
+          _section(sectionid).items[itemindex].label = el.innerHTML;
+        } else {
+          _section(sectionid).label = el.innerHTML;
+        }
+    
+        localStorage.setItem('json', JSON.stringify(data));
+      }
     });
   });
 };
