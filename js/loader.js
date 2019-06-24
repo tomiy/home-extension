@@ -20,9 +20,10 @@ var defaultdata = `{
 const elementsFromPoint = (x, y, l) => {
   let element = document.elementFromPoint(x, y);
   if (element !== l && element !== document.documentElement) {
+    element.dataset.pevents = element.style['pointerEvents'];
     element.style['pointerEvents'] = 'none';
     let result = [element].concat(elementsFromPoint(x, y, element));
-    element.style['pointerEvents'] = 'auto';
+    element.style['pointerEvents'] = element.dataset.pevents;
     return result;
   } else return [];
 };
