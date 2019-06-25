@@ -1,21 +1,21 @@
 const env = document.currentScript.getAttribute('env');
 
 var data;
-var defaultdata = `{
-  "sections": [
+var defaultdata = {
+  sections: [
     {
-      "color": "123",
-      "bind": "changeit",
-      "label": "Change it",
-      "items": [
+      color: '123',
+      bind: 'a'+Date.now(),
+      label: 'Example section',
+      items: [
         {
-        "label": "Example item",
-        "url": "example.com"
+          label: 'Example item',
+          url: 'example.com'
         }
       ]
     }
   ]
-}`;
+};
 
 const elementsFromPoint = (x, y, l) => {
   let element = document.elementFromPoint(x, y);
@@ -46,7 +46,7 @@ const getNodeIndex = element => [...element.parentNode.childNodes].indexOf(eleme
 const classpresent = (el, classes) => {
   let classpresent = false;
   classes.forEach(c => {
-    if(el.matches(`.${c}`)) {
+    if (el.matches(`.${c}`)) {
       classpresent = true;
     }
   });
@@ -55,7 +55,7 @@ const classpresent = (el, classes) => {
 
 const delegate = (ev, classes, callback) => {
   let istarget, target;
-  if(ev instanceof MouseEvent) {
+  if (ev instanceof MouseEvent) {
     target = elementsFromPoint(ev.clientX, ev.clientY).filter(el => {
       return classpresent(el, classes);
     });
@@ -64,7 +64,7 @@ const delegate = (ev, classes, callback) => {
     target = [ev.target];
     istarget = classpresent(target[0], classes);
   }
-  if(istarget) {
+  if (istarget) {
     callback(target.pop(), ev);
   }
   return istarget;
@@ -94,64 +94,64 @@ const createitem = itemdata => {
   url.href = itemdata.url;
   url.target = '_blank';
 
-  if (env == "options") {
+  if (env == 'options') {
     urltxt.contentEditable = true;
     urltxt.classList.add('editabletxt');
     urltxt.classList.add('editabletxt-item');
-    
+
     urldel.classList.add('delete');
     urldel.classList.add('delete-item');
-    
+
     url.appendChild(urldel);
   }
-  
+
   urltxt.innerHTML = itemdata.label;
   url.appendChild(urltxt);
-  
+
   item.appendChild(icon);
   item.appendChild(url);
-  
+
   return item;
 };
 
 const createsection = sectiondata => {
   let section = document.createElement('div');
-  
+
   let label = document.createElement('div');
   let labeltxt = document.createElement('span');
   let labeldel = document.createElement('span');
   let labeladd = document.createElement('span');
-  
+
   if (!localStorage.getItem(sectiondata.bind)) {
     localStorage.setItem(sectiondata.bind, parseInt(localStorage.length) + 1);
   }
-  
+
   section.classList.add('section');
   section.classList.add('drag-item');
-  
+
   label.classList.add('label');
-  
+
   if (sectiondata.color) label.style.backgroundColor = `#${sectiondata.color}`;
   label.style.color = rgblum(label.style.backgroundColor);
-  
-  if (env == "options") {
+
+  if (env == 'options') {
     labeltxt.contentEditable = true;
     labeltxt.classList.add('editabletxt');
     labeltxt.classList.add('editabletxt-section');
-    
+
     labeldel.classList.add('delete');
     labeldel.classList.add('delete-section');
     label.appendChild(labeldel);
-    
+
     labeladd.classList.add('add');
     labeladd.classList.add('add-section');
     labeladd.addEventListener('click', e => {
       let prompturl;
-      if(prompturl = prompt('Enter a url for the new item', 'http://www.example.com/')) {
+      if (prompturl = prompt('Enter a url for the new item', 'http://www.example.com/')) {
         let section = e.target.closest('.section-container');
         let itemobj = {
-          'label': prompturl,
-          'url': prompturl
+          label: prompturl,
+          url: prompturl
         };
         let item = createitem(itemobj);
         section.querySelector('.items').appendChild(item);
@@ -163,20 +163,20 @@ const createsection = sectiondata => {
     });
     label.appendChild(labeladd);
   }
-  
+
   labeltxt.innerHTML = sectiondata.label;
   label.appendChild(labeltxt);
 
   section.appendChild(label);
-  
+
   return section;
 };
 
 const load = () => {
   data = localStorage.getItem('json');
-  if (!data) data = defaultdata;
-
+  if (!data) data = JSON.stringify(defaultdata);
   data = JSON.parse(data);
+  if (!data.sections.length) data = defaultdata;
 
   for (let k in data.sections) {
     let sectiondata = data.sections[k];
@@ -202,6 +202,47 @@ const load = () => {
     section.appendChild(items);
     sectionContainer.appendChild(section);
     container.appendChild(sectionContainer);
+  }
+
+  if (env == 'options') {
+    let sectionadd = document.createElement('div');
+    sectionadd.classList.add('section-add');
+    sectionadd.classList.add('section-container');
+
+    sectionadd.addEventListener('click', e => {
+      let prompthex;
+      if (prompthex = prompt('Enter a hex color for the new section', 'aaccbb')) {
+        let sectionobj = {
+          bind: 'a'+Date.now(),
+          label: 'New section',
+          color: prompthex,
+          items: []
+        };
+
+        let sectionContainer = document.createElement('div');
+        let section = createsection(sectionobj);
+        let items = document.createElement('div');
+
+        sectionContainer.classList.add('drag-container');
+        sectionContainer.classList.add('section-container');
+        sectionContainer.id = sectionobj.bind;
+        sectionContainer.style.order = localStorage.getItem(sectionobj.bind);
+        sectionContainer.dataset.order = localStorage.getItem(sectionobj.bind);
+
+        items.classList.add('items');
+
+        section.appendChild(items);
+        sectionContainer.appendChild(section);
+        container.appendChild(sectionContainer);
+
+        data.sections.push(sectionobj);
+
+        localStorage.setItem('json', JSON.stringify(data));
+
+      }
+    });
+
+    container.appendChild(sectionadd);
   }
 
   let cur = null;
@@ -249,7 +290,7 @@ const load = () => {
   });
 
   document.addEventListener('mousedown', e => {
-    if(delegate(e, ['editabletxt-section', 'delete-section', 'add-section'], (el, e) => e.stopPropagation())) return;
+    if (delegate(e, ['editabletxt-section', 'delete-section', 'add-section'], (el, e) => e.stopPropagation())) return;
     delegate(e, ['label'], (label, e) => {
       initial.x = e.clientX;
       initial.y = e.clientY;
@@ -260,18 +301,18 @@ const load = () => {
   document.addEventListener('click', e => {
     delegate(e, ['editabletxt-item', 'delete-item', 'add-item'], (el, e) => e.preventDefault());
     delegate(e, ['delete'], (el, e) => {
-      if (confirm("Are you sure you want to delete?")) {
+      if (confirm('Are you sure you want to delete?')) {
         let sectionname = el.closest('.section-container').id, itemindex;
         let sectionid = _sectionid(sectionname);
         if (!!el.closest('.item')) {
           itemindex = getNodeIndex(e.target.closest('.item'));
-          document.querySelector(`#${sectionname} .item:nth-child(${itemindex+1})`).remove();
+          document.querySelector(`#${sectionname} .item:nth-child(${itemindex + 1})`).remove();
           data.sections[sectionid].items.splice(itemindex, 1);
         } else {
           document.querySelector(`#${sectionname}`).remove();
           data.sections.splice(sectionid, 1);
         }
-        
+
         localStorage.setItem('json', JSON.stringify(data));
       }
     });
@@ -291,11 +332,13 @@ const load = () => {
         } else {
           _section(sectionid).label = el.innerHTML;
         }
-    
+
         localStorage.setItem('json', JSON.stringify(data));
       }
     });
   });
+
+  document.addEventListener('dragstart', e => e.preventDefault());
 };
 
 document.addEventListener('DOMContentLoaded', load);
