@@ -119,12 +119,12 @@
 }
 
 .item a {
-    margin-left: 20px;
     color: black;
     display: block;
     text-decoration: none;
     white-space: nowrap;
     text-overflow: ellipsis;
+    text-align: center;
 }
 
 #container {
