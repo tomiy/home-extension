@@ -1,119 +1,135 @@
 .drag-container {
-  position: relative;
-  display: flex;
+    position: relative;
+    display: flex;
 }
 
 .drag-item {
-  position: absolute;
-  user-select: none;
+    position: absolute;
+    user-select: none;
 }
 
 .section-container {
-  width: 20%;
-  height: 150px;
-  border: 2px solid transparent;
-  margin: 5px;
+    width: 20%;
+    height: 150px;
+    border: 2px solid transparent;
+    margin: 5px;
 }
 
 .section {
-  transition: box-shadow 0.1s; 
-  text-align: center;
-  width: 100%;
-  height: inherit;
-  border: 2px solid #abc;
-  border-radius: 3px;
-  background: repeating-linear-gradient(45deg, #ccc, #ccc 5px, #ddd 5px, #ddd 10px);
+    transition: box-shadow 0.1s;
+    text-align: center;
+    width: 100%;
+    height: inherit;
+    border: 2px solid #abc;
+    border-radius: 3px;
+    background: repeating-linear-gradient(45deg, #ccc, #ccc 5px, #ddd 5px, #ddd 10px);
 }
 
 .section:active {
-  box-shadow: 0px 10px 5px 0px rgba(0,0,0,0.5);
+    box-shadow: 0px 10px 5px 0px rgba(0, 0, 0, 0.5);
 }
 
 .add-section {
-  order: 1000;
+    order: 1000;
 }
 
 .add-section::before {
-  cursor: pointer;
-  display: block;
-  width: 100%;
-  height: 100%;
-  content: "➕";
-  font-size: 75px;
-  line-height: 150px;
-  text-align: center;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    height: 100%;
+    content: "➕";
+    font-size: 75px;
+    line-height: 150px;
+    text-align: center;
 }
 
 .label {
-  cursor: move;
-  position: relative;
-  height: 30px;
-  line-height: 30px;
-  font-weight: bold;
-  background-color: #acb;
+    cursor: move;
+    position: relative;
+    height: 30px;
+    line-height: 30px;
+    font-weight: bold;
+    background-color: #acb;
 }
 
 .editabletxt {
-  cursor: text;
+    cursor: text;
 }
 
 .editabletxt::before {
-  content: "✎ ";
+    content: "✎ ";
 }
 
 .delete::before {
-  content: "❌";
-  right: 0;
+    content: "❌";
+    right: 0;
 }
 
 .add::before {
-  content: "➕";
-  left: 0;
+    content: "➕";
+    left: 0;
 }
 
-.delete::before, .add::before {
-  cursor: pointer;
-  position: absolute;
-  width: 30px;
-  font-size: 1.2em;
+.delete::before,
+.add::before {
+    visibility: hidden;
+    cursor: pointer;
+    position: absolute;
+    width: 30px;
+    font-size: 1.2em;
+}
+
+.item:hover .delete::before,
+.label:hover .delete::before,
+.label:hover .add::before {
+    visibility: visible;
 }
 
 .items {
-  max-height: 120px;
-  overflow-y: auto;
-  overflow-x: hidden;
+    max-height: 120px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .item {
-  transition: all 0.2s linear;
-  line-height: 20px;
-  height: 20px;
-  padding: 2px;
-  cursor: pointer;
+    transition: all 0.2s linear;
+    line-height: 20px;
+    height: 20px;
+    padding: 2px;
+    cursor: pointer;
 }
 
-.item:nth-child(odd) { background-color: #fdfdfd; }
-.item:nth-child(even) { background-color: #fafafa; }
-.item:hover { background-color: #eee; }
+.item:nth-child(odd) {
+    background-color: #fdfdfd;
+}
+
+.item:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.item:hover {
+    background-color: #eee;
+}
 
 .item img {
-  position: absolute;
-  left: 0;
-  height: inherit;
+    position: absolute;
+    left: 0;
+    height: inherit;
 }
 
 .item a {
-  color: black;
-  display: block;
-  text-decoration: none;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+    color: black;
+    display: block;
+    text-decoration: none;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 #container {
-  width: 750px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: space-between;
+    width: 750px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: space-between;
 }
