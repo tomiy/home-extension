@@ -3,7 +3,9 @@ https://chrome.google.com/webstore/detail/home/nmfhcjpmgnoecpbdmbohnamdmhmhbfdf
 
 #### Tips:
 When you install or delete every tile there's a default tile with 1 item that automatically gets added
+
 Right click the extension icon and go to "Options" to add, remove and move tiles and items
+
 You can also move tiles in the popup
 
 #### Roadmap (lol):
