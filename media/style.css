@@ -29,11 +29,11 @@
   box-shadow: 0px 10px 5px 0px rgba(0,0,0,0.5);
 }
 
-.section-add {
+.add-section {
   order: 1000;
 }
 
-.section-add::before {
+.add-section::before {
   cursor: pointer;
   display: block;
   width: 100%;

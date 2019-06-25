@@ -144,23 +144,7 @@ const createsection = sectiondata => {
     label.appendChild(labeldel);
 
     labeladd.classList.add('add');
-    labeladd.classList.add('add-section');
-    labeladd.addEventListener('click', e => {
-      let prompturl;
-      if (prompturl = prompt('Enter a url for the new item', 'http://www.example.com/')) {
-        let section = e.target.closest('.section-container');
-        let itemobj = {
-          label: prompturl,
-          url: prompturl
-        };
-        let item = createitem(itemobj);
-        section.querySelector('.items').appendChild(item);
-        _section(section.id).items.push(itemobj);
-
-        localStorage.setItem('json', JSON.stringify(data));
-
-      }
-    });
+    labeladd.classList.add('add-item');
     label.appendChild(labeladd);
   }
 
@@ -206,41 +190,8 @@ const load = () => {
 
   if (env == 'options') {
     let sectionadd = document.createElement('div');
-    sectionadd.classList.add('section-add');
+    sectionadd.classList.add('add-section');
     sectionadd.classList.add('section-container');
-
-    sectionadd.addEventListener('click', e => {
-      let prompthex;
-      if (prompthex = prompt('Enter a hex color for the new section', 'aaccbb')) {
-        let sectionobj = {
-          bind: 'a'+Date.now(),
-          label: 'New section',
-          color: prompthex,
-          items: []
-        };
-
-        let sectionContainer = document.createElement('div');
-        let section = createsection(sectionobj);
-        let items = document.createElement('div');
-
-        sectionContainer.classList.add('drag-container');
-        sectionContainer.classList.add('section-container');
-        sectionContainer.id = sectionobj.bind;
-        sectionContainer.style.order = localStorage.getItem(sectionobj.bind);
-        sectionContainer.dataset.order = localStorage.getItem(sectionobj.bind);
-
-        items.classList.add('items');
-
-        section.appendChild(items);
-        sectionContainer.appendChild(section);
-        container.appendChild(sectionContainer);
-
-        data.sections.push(sectionobj);
-
-        localStorage.setItem('json', JSON.stringify(data));
-
-      }
-    });
 
     container.appendChild(sectionadd);
   }
@@ -290,7 +241,7 @@ const load = () => {
   });
 
   document.addEventListener('mousedown', e => {
-    if (delegate(e, ['editabletxt-section', 'delete-section', 'add-section'], (el, e) => e.stopPropagation())) return;
+    if (delegate(e, ['editabletxt-section', 'delete-section', 'add-section', 'add-item'], (el, e) => e.stopPropagation())) return;
     delegate(e, ['label'], (label, e) => {
       initial.x = e.clientX;
       initial.y = e.clientY;
@@ -299,7 +250,7 @@ const load = () => {
   });
 
   document.addEventListener('click', e => {
-    delegate(e, ['editabletxt-item', 'delete-item', 'add-item'], (el, e) => e.preventDefault());
+    delegate(e, ['editabletxt-item', 'delete-item'], (el, e) => e.preventDefault());
     delegate(e, ['delete'], (el, e) => {
       if (confirm('Are you sure you want to delete?')) {
         let sectionname = el.closest('.section-container').id, itemindex;
@@ -314,6 +265,54 @@ const load = () => {
         }
 
         localStorage.setItem('json', JSON.stringify(data));
+      }
+    });
+    delegate(e, ['add-section'], (el, e) => {
+      let prompthex;
+      if (prompthex = prompt('Enter a hex color for the new section', 'aaccbb')) {
+        let sectionobj = {
+          bind: 'a'+Date.now(),
+          label: 'New section',
+          color: prompthex,
+          items: []
+        };
+
+        let sectionContainer = document.createElement('div');
+        let section = createsection(sectionobj);
+        let items = document.createElement('div');
+
+        sectionContainer.classList.add('drag-container');
+        sectionContainer.classList.add('section-container');
+        sectionContainer.id = sectionobj.bind;
+        sectionContainer.style.order = localStorage.getItem(sectionobj.bind);
+        sectionContainer.dataset.order = localStorage.getItem(sectionobj.bind);
+
+        items.classList.add('items');
+
+        section.appendChild(items);
+        sectionContainer.appendChild(section);
+        container.appendChild(sectionContainer);
+
+        data.sections.push(sectionobj);
+
+        localStorage.setItem('json', JSON.stringify(data));
+
+      }
+    });
+    delegate(e, ['add-item'], (el, e) => {
+      let prompturl;
+      if (prompturl = prompt('Enter a url for the new item', 'http://www.example.com/')) {
+        let section = el.closest('.section-container');
+        let itemobj = {
+          label: prompturl,
+          url: prompturl
+        };
+        let item = createitem(itemobj);
+        section.querySelector('.items').appendChild(item);
+        _section(section.id).items.push(itemobj);
+
+        localStorage.setItem('json', JSON.stringify(data));
+
       }
     });
   });
