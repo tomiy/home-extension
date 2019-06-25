@@ -9,7 +9,7 @@
 }
 
 .section-container {
-  width: calc(100vw/5);
+  width: 20%;
   height: 150px;
   border: 2px solid transparent;
   margin: 5px;
@@ -18,7 +18,7 @@
 .section {
   transition: box-shadow 0.1s; 
   text-align: center;
-  width: inherit;
+  width: 100%;
   height: inherit;
   border: 2px solid #abc;
   border-radius: 3px;
