@@ -17,7 +17,6 @@
 
 .section {
     transition: box-shadow 0.1s;
-    text-align: center;
     width: 100%;
     height: inherit;
     border: 2px solid #abc;
@@ -45,6 +44,7 @@
 }
 
 .label {
+    text-align: center;
     cursor: move;
     position: relative;
     height: 30px;
@@ -119,6 +119,7 @@
 }
 
 .item a {
+    margin-left: 20px;
     color: black;
     display: block;
     text-decoration: none;
