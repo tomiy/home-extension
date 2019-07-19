@@ -247,7 +247,7 @@ const load = () => {
 
     document.addEventListener('click', e => {
         delegate(e, ['editabletxt-item', 'delete-item'], (el, e) => e.preventDefault());
-        delegate(e, ['delete'], (el, e) => {
+        if(delegate(e, ['delete'], (el, e) => {
             if (confirm('Are you sure you want to delete?')) {
                 let sectionname = el.closest('.section-container').id,
                     itemindex;
@@ -263,7 +263,7 @@ const load = () => {
 
                 localStorage.setItem('json', JSON.stringify(data));
             }
-        });
+        })) return;
         delegate(e, ['add-section'], (el, e) => {
             let prompthex;
             if (prompthex = prompt('Enter a hex color for the new section', 'aaccbb')) {
@@ -337,7 +337,7 @@ const load = () => {
 
     document.addEventListener('keypress', e => {
         delegate(e, ['editabletxt'], (el, e) => {
-            if (el.offsetWidth >= 125) e.preventDefault();
+            if (e.keyCode == 13) e.preventDefault();
         });
     });
 
