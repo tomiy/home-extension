@@ -85,7 +85,7 @@ const createitem = itemdata => {
 
     item.classList.add('item');
 
-    icon.src = 'https://favicons.githubusercontent.com/' + host.hostname;
+    icon.dataset.src = 'https://favicons.githubusercontent.com/' + host.hostname;
 
     url.href = itemdata.url;
     url.target = '_blank';
@@ -344,4 +344,7 @@ const load = () => {
     document.addEventListener('dragstart', e => e.preventDefault());
 };
 
-document.addEventListener('DOMContentLoaded', load);
+document.addEventListener('DOMContentLoaded', () => {
+    load();
+    document.querySelectorAll('img').forEach(image => image.src = image.dataset.src);
+});
