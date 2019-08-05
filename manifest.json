@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Home",
-    "version": "0.6",
+    "version": "0.8",
     "icons": {
         "16": "media/icon16.png",
         "48": "media/icon48.png",

@@ -247,23 +247,23 @@ const load = () => {
 
     document.addEventListener('click', e => {
         delegate(e, ['editabletxt-item', 'delete-item'], (el, e) => e.preventDefault());
-        if(delegate(e, ['delete'], (el, e) => {
-            if (confirm('Are you sure you want to delete?')) {
-                let sectionname = el.closest('.section-container').id,
-                    itemindex;
-                let sectionid = _sectionid(sectionname);
-                if (!!el.closest('.item')) {
-                    itemindex = getNodeIndex(e.target.closest('.item'));
-                    document.querySelector(`#${sectionname} .item:nth-child(${itemindex + 1})`).remove();
-                    data.sections[sectionid].items.splice(itemindex, 1);
-                } else {
-                    document.querySelector(`#${sectionname}`).remove();
-                    data.sections.splice(sectionid, 1);
-                }
+        if (delegate(e, ['delete'], (el, e) => {
+                if (confirm('Are you sure you want to delete?')) {
+                    let sectionname = el.closest('.section-container').id,
+                        itemindex;
+                    let sectionid = _sectionid(sectionname);
+                    if (!!el.closest('.item')) {
+                        itemindex = getNodeIndex(e.target.closest('.item'));
+                        document.querySelector(`#${sectionname} .item:nth-child(${itemindex + 1})`).remove();
+                        data.sections[sectionid].items.splice(itemindex, 1);
+                    } else {
+                        document.querySelector(`#${sectionname}`).remove();
+                        data.sections.splice(sectionid, 1);
+                    }
 
-                localStorage.setItem('json', JSON.stringify(data));
-            }
-        })) return;
+                    localStorage.setItem('json', JSON.stringify(data));
+                }
+            })) return;
         delegate(e, ['add-section'], (el, e) => {
             let prompthex;
             if (prompthex = prompt('Enter a hex color for the new section', 'aaccbb')) {
@@ -346,5 +346,5 @@ const load = () => {
 
 document.addEventListener('DOMContentLoaded', () => {
     load();
-    document.querySelectorAll('img').forEach(image => image.src = image.dataset.src);
+    setTimeout(() => document.querySelectorAll('img').forEach(image => image.src = image.dataset.src), 1000);
 });
