@@ -306,10 +306,11 @@ const load = () => {
                 };
                 let item = createitem(itemobj);
                 section.querySelector('.items').appendChild(item);
-                _section(section.id).items.push(itemobj);
 
+                _section(section.id).items.push(itemobj);
                 localStorage.setItem('json', JSON.stringify(data));
 
+                setTimeout(() => item.querySelectorAll('img').forEach(image => image.src = image.dataset.src), 0);
             }
         });
     });
