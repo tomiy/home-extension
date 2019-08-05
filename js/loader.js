@@ -346,5 +346,5 @@ const load = () => {
 
 document.addEventListener('DOMContentLoaded', () => {
     load();
-    setTimeout(() => document.querySelectorAll('img').forEach(image => image.src = image.dataset.src), 1000);
+    setTimeout(() => document.querySelectorAll('img').forEach(image => image.src = image.dataset.src), 0);
 });
