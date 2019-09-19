@@ -7,4 +7,4 @@ const app = new $Application(env);
 app.getData();
 
 const documentEvents = new $Event(document);
-documentEvents.register('click', app.loadDOM.bind(app));
+documentEvents.register('DOMContentLoaded', app.loadDOM.bind(app));
