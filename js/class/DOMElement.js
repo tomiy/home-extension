@@ -10,8 +10,8 @@ export default class $DOMElement {
         return this;
     }
 
-    id(id) {
-        this.el.id = id;
+    attribute(key, value) {
+        this.el.setAttribute(key, value);
         return this;
     }
 
@@ -26,6 +26,12 @@ export default class $DOMElement {
     }
 
     child(DOMElement) {
-        this.el.appendChild(DOMElement.element);
+        this.el.appendChild(DOMElement.el);
+        return this;
+    }
+
+    content(value) {
+        this.el.innerHTML = value;
+        return this;
     }
 }

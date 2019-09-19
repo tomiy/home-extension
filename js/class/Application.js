@@ -1,5 +1,6 @@
 import $JSONObject from './JSONObject.js';
 import $DOMElement from './DOMElement.js';
+import $SectionParser from './SectionParser.js';
 
 export default class $Application {
     env;
@@ -42,16 +43,16 @@ export default class $Application {
             let bind = sectionData.bind;
             let sectionContainer = new $DOMElement('div')
                 .class('drag-container', 'section-container')
-                .id(bind)
+                .attribute('id', bind)
                 .style('order', localStorage.getItem(bind))
                 .data('order', bind);
-            let section = null; //TODO: create section
+            let section = $SectionParser.createSection(sectionData); //TODO: create section
             let items = new $DOMElement('div')
                 .class('items');
 
             for (let i in sectionData.items) {
-                let itemdata = sectiondata.items[i];
-                item = null; //TODO: create item
+                let itemData = sectionData.items[i];
+                let item = $SectionParser.createItem(itemData); //TODO: create item
                 items.child(item);
             }
 
