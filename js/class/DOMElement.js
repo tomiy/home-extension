@@ -1,27 +1,31 @@
 export default class $DOMElement {
-    element;
+    el;
 
     constructor(tag) {
-        this.element = document.createElement(tag);
+        this.el = document.createElement(tag);
     }
 
     class(...classes) {
-        this.element.classList.add(...classes);
+        this.el.classList.add(...classes);
         return this;
     }
 
     id(id) {
-        this.element.id = id;
+        this.el.id = id;
         return this;
     }
 
     style(key, value) {
-        this.element.style[key] = value;
+        this.el.style[key] = value;
         return this;
     }
 
     data(key, value) {
-        this.element.dataset[key] = value;
+        this.el.dataset[key] = value;
         return this;
+    }
+
+    child(DOMElement) {
+        this.el.appendChild(DOMElement.element);
     }
 }
