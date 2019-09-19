@@ -1,23 +1,10 @@
-import $DOMElement from './class/DOMElement.js';
-import $Utils from './class/Utils.js';
-import $JSONObject from './class/JSONObject.js';
-import $SectionParser from './class/SectionParser.js';
 import $Application from './class/Application.js';
+import $Event from './class/Event.js';
 
-let app = new $Application();
+const env = document.scripts[0].getAttribute('env');
+
+const app = new $Application(env);
 app.getData();
 
-app.data.updateObject((data) => {
-    let sectionobj = {
-        bind: 'a' + Date.now(),
-        label: 'New section',
-        color: '#abc',
-        items: []
-    };
-
-    data.sections.push(sectionobj);
-
-    return data;
-});
-
-console.log(app);
+const documentEvents = new $Event(document);
+documentEvents.register('click', app.loadDOM.bind(app));
