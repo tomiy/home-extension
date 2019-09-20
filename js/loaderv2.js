@@ -8,3 +8,4 @@ app.getData();
 
 const documentEvents = new $Event(document);
 documentEvents.register('DOMContentLoaded', app.loadDOM.bind(app));
+documentEvents.delegate('click', (e) => alert('test'), '.drag-container', '.section-container');
