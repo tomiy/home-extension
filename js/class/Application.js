@@ -32,7 +32,7 @@ export default class $Application {
         this.data.setPostCallback(this.updateStorage);
     }
 
-    updateStorage(json, object) {
+    updateStorage(json) {
         localStorage.setItem('json', json);
     }
 
@@ -46,13 +46,13 @@ export default class $Application {
                 .attribute('id', bind)
                 .style('order', localStorage.getItem(bind))
                 .data('order', bind);
-            let section = $SectionParser.createSection(sectionData); //TODO: create section
+            let section = $SectionParser.createSection(sectionData);
             let items = new $DOMElement('div')
                 .class('items');
 
             for (let i in sectionData.items) {
                 let itemData = sectionData.items[i];
-                let item = $SectionParser.createItem(itemData); //TODO: create item
+                let item = $SectionParser.createItem(itemData);
                 items.child(item);
             }
 
