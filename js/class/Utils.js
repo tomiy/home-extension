@@ -4,7 +4,7 @@ export default class $Utils {
         if (element !== l && element !== document.documentElement) {
             element.dataset.pevents = element.style['pointerEvents'];
             element.style['pointerEvents'] = 'none';
-            let result = [element].concat(elementsFromPoint(x, y, element));
+            let result = [element].concat($Utils.elementsFromPoint(x, y, element));
             element.style['pointerEvents'] = element.dataset.pevents;
             return result;
         } else return [];
