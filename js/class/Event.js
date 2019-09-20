@@ -2,12 +2,20 @@ import $Utils from './Utils.js';
 
 export default class $Event {
     el;
+    bind;
 
     constructor(el) {
         this.el = el;
     }
 
+    setBind(bind) {
+        this.bind = bind;
+    }
+
     register(name, callback) {
+        if (this.bind) {
+            callback = callback.bind(this.bind);
+        }
         this.el.addEventListener(name, callback);
     }
 
@@ -24,6 +32,9 @@ export default class $Event {
                 istarget = target[0].matches(matches);
             }
             if (istarget) {
+                if (this.bind) {
+                    callback = callback.bind(this.bind);
+                }
                 callback(target.pop(), e);
             }
             return istarget;
