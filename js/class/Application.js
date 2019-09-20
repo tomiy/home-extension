@@ -1,9 +1,18 @@
 import $JSONObject from './JSONObject.js';
 import $DOMElement from './DOMElement.js';
 import $SectionParser from './SectionParser.js';
+import $Utils from './Utils.js';
 
 export default class $Application {
+    //popup/options
     env;
+    //movement data
+    cur;
+    initial = {
+        x: 0,
+        y: 0
+    };
+    //localStorage JSON
     data;
     defaultdata = {
         sections: [{
@@ -17,8 +26,8 @@ export default class $Application {
         }]
     };
 
-    constructor(env) {
-        this.env = env;
+    constructor() {
+        this.env = document.scripts[0].getAttribute('env');
     }
 
     getData() {
@@ -45,7 +54,7 @@ export default class $Application {
                 .class('drag-container', 'section-container')
                 .attribute('id', bind)
                 .style('order', localStorage.getItem(bind))
-                .data('order', bind);
+                .data('order', localStorage.getItem(bind));
             let section = $SectionParser.createSection(sectionData);
             let items = new $DOMElement('div')
                 .class('items');
@@ -59,6 +68,50 @@ export default class $Application {
             section.child(items);
             sectionContainer.child(section);
             container.appendChild(sectionContainer.el);
+        }
+    }
+
+    pickup(label, e) {
+        this.initial.x = e.clientX;
+        this.initial.y = e.clientY;
+        this.cur = label.parentNode;
+    }
+
+    move(e) {
+        if (this.cur) {
+            let offsetX = e.clientX - this.initial.x;
+            let offsetY = e.clientY - this.initial.y;
+            this.cur.style.transform = 'translate3d(' + offsetX + 'px, ' + offsetY + 'px, 0)';
+            this.cur.style.zIndex = '1000';
+        }
+    }
+
+    drop() {
+        if (this.cur) {
+
+            let curRect = this.cur.getBoundingClientRect();
+            let target = $Utils
+                .elementsFromPoint(curRect.left + curRect.width / 2, curRect.top + curRect.height / 2)
+                .filter(el => el.matches('.drag-container')).pop();
+            if (target) {
+
+                let targetId = target.id;
+
+                target.id = this.cur.parentNode.id;
+                this.cur.parentNode.id = targetId;
+
+                localStorage.setItem(this.cur.parentNode.id, this.cur.parentNode.dataset.order);
+                localStorage.setItem(target.id, target.dataset.order);
+
+                [...target.children].forEach(el => {
+                    this.cur.parentNode.appendChild(el);
+                });
+                target.appendChild(this.cur);
+            }
+
+            this.cur.style.transform = null;
+            this.cur.style.zIndex = null;
+            this.cur = null;
         }
     }
 }
