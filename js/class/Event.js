@@ -12,11 +12,15 @@ export default class $Event {
         this.bind = bind;
     }
 
-    register(name, callback) {
+    applyBind(callback) {
         if (this.bind) {
             callback = callback.bind(this.bind);
         }
-        this.el.addEventListener(name, callback);
+        return callback;
+    }
+
+    register(name, callback) {
+        this.el.addEventListener(name, this.applyBind(callback));
     }
 
     delegate(name, callback, ...matches) {
@@ -32,10 +36,7 @@ export default class $Event {
                 istarget = target[0].matches(matches);
             }
             if (istarget) {
-                if (this.bind) {
-                    callback = callback.bind(this.bind);
-                }
-                callback(target.pop(), e);
+                this.applyBind(callback)(target.pop(), e);
             }
             return istarget;
         });
