@@ -11,3 +11,5 @@ documentEvents.register('DOMContentLoaded', app.loadDOM);
 documentEvents.delegate('mousedown', app.pickup, '.label');
 documentEvents.register('mousemove', app.move);
 documentEvents.register('mouseup', app.drop);
+
+documentEvents.register('dragstart', e => e.preventDefault());
