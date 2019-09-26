@@ -75,6 +75,8 @@ export default class $Application {
         this.initial.x = e.clientX;
         this.initial.y = e.clientY;
         this.cur = label.parentNode;
+
+        this.cur.style.boxShadow = "0px 10px 5px 0px rgba(0, 0, 0, 0.5)";
     }
 
     move(e) {
@@ -111,6 +113,7 @@ export default class $Application {
 
             this.cur.style.transform = null;
             this.cur.style.zIndex = null;
+            this.cur.style.boxShadow = null;
             this.cur = null;
         }
     }

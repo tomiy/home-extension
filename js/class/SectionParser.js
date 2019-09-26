@@ -43,6 +43,8 @@ export default class $SectionParser {
             .child(icon)
             .child(url);
 
+        setTimeout(() => item.el.querySelectorAll('img').forEach(image => image.src = image.dataset.src), 0);
+
         return item;
     }
 }
