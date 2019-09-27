@@ -21,13 +21,17 @@ export default class $Application {
             label: 'Example section',
             items: [{
                 label: 'Example item',
-                url: 'example.com'
+                url: 'http://www.example.com'
             }]
         }]
     };
 
     constructor() {
         this.env = document.scripts[0].getAttribute('env');
+    }
+
+    isPopup() {
+        return this.env == 'popup';
     }
 
     getData() {
@@ -65,10 +69,20 @@ export default class $Application {
                 items.child(item);
             }
 
+
             section.child(items);
             sectionContainer.child(section);
             container.appendChild(sectionContainer.el);
         }
+
+        this.addSectionTile(container);
+    }
+
+    addSectionTile(container) {
+        if (this.isPopup()) return;
+        let sectionTile = new $DOMElement('div')
+            .class('add-section', 'section-container');
+        container.appendChild(sectionTile.el);
     }
 
     pickup(label, e) {

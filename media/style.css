@@ -125,8 +125,22 @@
 
 #container {
     width: 750px;
+    height: 97vh;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-content: space-between;
+    align-content: center;
+    margin: 0 auto;
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    background: rgba(128, 128, 128, 0.5);
+    width: 100vw;
+    height: 100vh;
+    opacity: 0;
+    transition: opacity 0.1s;
 }
