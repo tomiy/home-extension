@@ -23,6 +23,9 @@ export default class $Popup {
             .child(this.popup);
         this.overlay = overlay;
         this.overlay.appendChild(popupContainer.el);
+
+        //init forms
+        this.newSectionForm = new $NewSectionForm();
     }
 
     isOpened() {
@@ -44,7 +47,6 @@ export default class $Popup {
 
     showCreateSection() {
         if (this.isOpened()) return;
-        this.newSectionForm = new $NewSectionForm();
         this.popup.child(this.newSectionForm.makeForm());
         this.show();
     }
