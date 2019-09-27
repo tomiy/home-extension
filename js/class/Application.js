@@ -81,7 +81,8 @@ export default class $Application {
     addSectionTile(container) {
         if (this.isPopup()) return;
         let sectionTile = new $DOMElement('div')
-            .class('add-section', 'section-container');
+            .attribute('id', 'add-section')
+            .class('section-container');
         container.appendChild(sectionTile.el);
     }
 
