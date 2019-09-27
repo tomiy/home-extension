@@ -1,11 +1,18 @@
-import $DOMElement from "./DOMElement.js";
+import $DOMElement from "../dom/DOMElement.js";
+import $NewSectionForm from "./NewSectionForm.js";
 
 export default class $Popup {
+    app;
     popup;
     overlay;
     opened = false;
 
-    constructor(overlay) {
+    //forms
+    newSectionForm;
+
+    constructor(app, overlay) {
+        this.app = app; //to update the JSONObject
+
         let closebtn = new $DOMElement('span')
             .attribute('id', 'popup-close');
         this.popup = new $DOMElement('span')
@@ -37,9 +44,16 @@ export default class $Popup {
 
     showCreateSection() {
         if (this.isOpened()) return;
-        this.popup.content(
-            'test'
-        );
+        this.newSectionForm = new $NewSectionForm();
+        this.popup.child(this.newSectionForm.makeForm());
         this.show();
+    }
+
+    submitCreateSection() {
+        let formData = this.newSectionForm.formToArray();
+        this.app.data.updateJson((json) => {
+            //stuff n things
+            return json;
+        });
     }
 }
