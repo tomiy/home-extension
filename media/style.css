@@ -24,11 +24,11 @@
     background: repeating-linear-gradient(45deg, #ccc, #ccc 5px, #ddd 5px, #ddd 10px);
 }
 
-.add-section {
+#add-section {
     order: 1000;
 }
 
-.add-section::before {
+#add-section::before {
     cursor: pointer;
     display: block;
     width: 100%;
@@ -123,13 +123,17 @@
     text-align: center;
 }
 
+#overlay,
+#container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 #container {
     width: 750px;
     height: 97vh;
-    display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    align-content: center;
     margin: 0 auto;
 }
 
@@ -141,6 +145,26 @@
     background: rgba(128, 128, 128, 0.5);
     width: 100vw;
     height: 100vh;
-    opacity: 0;
     transition: opacity 0.1s;
+    /* for click events */
+    opacity: 0;
+    pointer-events: none;
+}
+
+#popup {
+    position: relative;
+    background: white;
+    min-width: 300px;
+    min-height: 100px;
+}
+
+#popup-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#popup-close:before {
+    cursor: pointer;
+    content: "❌";
 }
