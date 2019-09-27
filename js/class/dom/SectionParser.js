@@ -1,5 +1,5 @@
 import $DOMElement from './DOMElement.js';
-import $Utils from './Utils.js';
+import $Utils from '../Utils.js';
 
 export default class $SectionParser {
     static createSection(sectionData) {
