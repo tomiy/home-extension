@@ -1,11 +1,11 @@
 import $Application from './class/Application.js';
 import $Event from './class/Event.js';
-import $Popup from './class/Popup.js';
+import $Popup from './class/form/Popup.js';
 
 const app = new $Application();
 const documentEvents = new $Event(document);
 const popupContainer = typeof(overlay) === 'undefined' ? document.createElement('span') : overlay;
-const popup = new $Popup(popupContainer);
+const popup = new $Popup(app, popupContainer);
 //get objects from localStorage
 app.getData();
 
@@ -24,14 +24,19 @@ documentEvents.register('DOMContentLoaded', () => {
     documentEvents.register('dragstart', e => e.preventDefault());
 
     //load Popup and option events
-    const popupCloseEvent = new $Event(document.querySelector('#popup-close'));
-    const addSectionEvent = new $Event(document.querySelector('#add-section'));
+    try {
+        const addSectionEvent = new $Event(document.querySelector('#add-section'));
+        const popupCloseEvent = new $Event(document.querySelector('#popup-close'));
 
-    popupCloseEvent.setBind(popup);
-    addSectionEvent.setBind(popup);
+        addSectionEvent.setBind(popup);
+        popupCloseEvent.setBind(popup);
 
-    documentEvents.register('keydown', e => e.keyCode == 27 && popup.close());
-    popupCloseEvent.register('click', popup.close);
+        popupCloseEvent.register('click', popup.close);
+        documentEvents.register('keydown', e => e.keyCode == 27 && popup.close());
 
-    addSectionEvent.register('click', popup.showCreateSection);
+        addSectionEvent.register('click', popup.showCreateSection);
+    } catch (e) {
+        // console.log('Not applicable in popup env');
+    }
+
 });

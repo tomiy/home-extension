@@ -1,6 +1,6 @@
 import $JSONObject from './JSONObject.js';
-import $DOMElement from './DOMElement.js';
-import $SectionParser from './SectionParser.js';
+import $DOMElement from './dom/DOMElement.js';
+import $SectionParser from './dom/SectionParser.js';
 import $Utils from './Utils.js';
 
 export default class $Application {
