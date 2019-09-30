@@ -4,22 +4,24 @@ import $SectionParser from "../dom/SectionParser.js";
 
 export default class $NewSectionForm extends $Form {
     generate() {
-        let formObj = {
-            header: 'New Section',
-            fields: [{
-                    type: 'text',
-                    name: 'section-name',
-                    label: 'Name'
-                },
-                {
-                    type: 'color',
-                    name: 'section-color',
-                    label: 'Color'
-                }
-            ]
-        };
+        if (!this.form) {
+            let formObj = {
+                header: 'New Section',
+                fields: [{
+                        type: 'text',
+                        name: 'section-name',
+                        label: 'Name'
+                    },
+                    {
+                        type: 'color',
+                        name: 'section-color',
+                        label: 'Color'
+                    }
+                ]
+            };
 
-        this.objectToForm(formObj);
+            this.objectToForm(formObj);
+        }
 
         return this.form;
     }
