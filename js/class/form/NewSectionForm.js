@@ -1,5 +1,4 @@
 import $Form from "./Form.js";
-import $DOMElement from "../dom/DOMElement.js";
 import $SectionParser from "../dom/SectionParser.js";
 
 export default class $NewSectionForm extends $Form {
@@ -23,7 +22,14 @@ export default class $NewSectionForm extends $Form {
             this.objectToForm(formObj);
         }
 
+        this.reset();
+
         return this.form;
+    }
+
+    reset() {
+        this.form.el.reset();
+        this.errors.content(null);
     }
 
     submit(app) {
