@@ -27,6 +27,10 @@ export default class $Utils {
         return [...element.parentNode.childNodes].indexOf(element);
     }
 
+    static isRightClick(e) {
+        return e.which === 3 || e.button === 2;
+    }
+
     static isOptionsEnv() {
         return document.scripts[0].getAttribute('env') == 'options';
     }
