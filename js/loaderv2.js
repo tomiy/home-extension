@@ -5,8 +5,6 @@ import $Utils from './class/Utils.js';
 
 const app = new $Application();
 const documentEvents = new $Event(document);
-const popupContainer = typeof(overlay) === 'undefined' ? document.createElement('span') : overlay;
-const popup = new $Popup(app, popupContainer);
 
 //get objects from localStorage
 app.getData();
@@ -24,6 +22,9 @@ documentEvents.register('DOMContentLoaded', () => {
 
     //load Popup and option events
     if ($Utils.isOptionsEnv()) {
+        const popupContainer = overlay;
+        const popup = new $Popup(app, popupContainer);
+
         app.addSectionTile();
 
         const addSectionEvent = new $Event(document.querySelector('#add-section'));
