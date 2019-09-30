@@ -1,3 +1,10 @@
+body,
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 .drag-container {
     position: relative;
     display: flex;
@@ -123,6 +130,7 @@
     text-align: center;
 }
 
+body,
 #overlay,
 #container {
     display: flex;
@@ -131,10 +139,8 @@
 }
 
 #container {
-    width: 750px;
-    height: 97vh;
+    /* width: 750px; set through js*/
     flex-wrap: wrap;
-    margin: 0 auto;
 }
 
 #overlay {
