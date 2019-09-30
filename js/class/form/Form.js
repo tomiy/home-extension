@@ -9,11 +9,11 @@ export default class $Form {
     }
 
     formToArray() {
-        let formData = [];
+        let formData = {};
         let formEl = this.form.el;
         for (let i = 0; i < formEl.length; i++) {
             if (formEl[i].name != '' && (formEl[i].type == 'radio' ? formEl[i].checked : true)) {
-                formData.push([formEl[i].name, formEl[i].value]);
+                formData[formEl[i].name] = formEl[i].value;
             }
         }
         return formData;
