@@ -37,6 +37,7 @@ export default class $Popup {
     }
 
     show() {
+        if (this.isOpened()) return;
         this.opened = true;
         this.overlay.style.pointerEvents = 'all';
         this.overlay.style.opacity = 1;
@@ -59,7 +60,6 @@ export default class $Popup {
     //popup functions
     //------------------------
     showCreateSection() {
-        if (this.isOpened()) return;
         this.popup.child(this.newSectionForm.generate());
         this.submitCallback = this.newSectionForm.submit.bind(this.newSectionForm);
         this.show();

@@ -26,7 +26,9 @@ documentEvents.register('DOMContentLoaded', () => {
     documentEvents.register('dragstart', e => e.preventDefault());
 
     //load Popup and option events
-    if (!$Utils.isPopupEnv()) {
+    if ($Utils.isOptionsEnv()) {
+        app.addSectionTile();
+
         const addSectionEvent = new $Event(document.querySelector('#add-section'));
         const popupCloseEvent = new $Event(document.querySelector('#popup-close'));
         const popupSubmitEvent = new $Event(document.querySelector('#popup-submit'));
@@ -40,5 +42,10 @@ documentEvents.register('DOMContentLoaded', () => {
         documentEvents.register('keydown', e => e.keyCode == 27 && popup.close());
 
         addSectionEvent.register('click', popup.showCreateSection);
+        documentEvents.delegate('contextmenu', (label, e) => {
+            e.preventDefault();
+            console.log('Open section context menu from', label.closest('.section'));
+            return false;
+        }, '.label');
     }
 });
