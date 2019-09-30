@@ -16,9 +16,8 @@ export default class $Popup {
 
         let closebtn = new $DOMElement('span')
             .attribute('id', 'popup-close');
-        let submitbtn = new $DOMElement('button')
-            .attribute('id', 'popup-submit')
-            .content('Save');
+        let submitbtn = new $DOMElement('span')
+            .attribute('id', 'popup-submit');
         this.popup = new $DOMElement('span')
             .attribute('id', 'popup-content');
         let popupContainer = new $DOMElement('div')
@@ -52,16 +51,17 @@ export default class $Popup {
 
     submit() {
         if (!this.submitCallback) return;
-        (this.submitCallback)();
-        this.close();
+        if ((this.submitCallback)(this.app) !== false) {
+            this.close();
+        }
     }
 
     //popup functions
     //------------------------
     showCreateSection() {
         if (this.isOpened()) return;
-        this.popup.child(this.newSectionForm.makeForm());
-        this.submitCallback = this.newSectionForm.submit;
+        this.popup.child(this.newSectionForm.generate());
+        this.submitCallback = this.newSectionForm.submit.bind(this.newSectionForm);
         this.show();
     }
 }

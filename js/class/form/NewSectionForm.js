@@ -3,42 +3,36 @@ import $DOMElement from "../dom/DOMElement.js";
 import $SectionParser from "../dom/SectionParser.js";
 
 export default class $NewSectionForm extends $Form {
-    makeForm() {
-        let header = new $DOMElement('header')
-            .content('New Section');
+    generate() {
+        let formObj = {
+            header: 'New Section',
+            fields: [{
+                    type: 'text',
+                    name: 'section-name',
+                    label: 'Name'
+                },
+                {
+                    type: 'color',
+                    name: 'section-color',
+                    label: 'Color'
+                }
+            ]
+        };
 
-        let nameInput = new $DOMElement('input')
-            .attribute('id', 'section-name')
-            .attribute('name', 'section-name');
-        let nameLabel = new $DOMElement('label')
-            .attribute('for', 'section-name')
-            .content('Name');
-        let name = new $DOMElement('div')
-            .child(nameLabel)
-            .child(nameInput);
+        this.objectToForm(formObj);
 
-        let colorInput = new $DOMElement('input')
-            .attribute('type', 'color')
-            .attribute('id', 'section-color')
-            .attribute('name', 'section-color');
-        let colorLabel = new $DOMElement('label')
-            .attribute('for', 'section-color')
-            .content('Color');
-        let color = new $DOMElement('div')
-            .child(colorLabel)
-            .child(colorInput);
-
-        this.form = new $DOMElement('form')
-            .child(header)
-            .child(name)
-            .child(color);
-        //override the stuff
         return this.form;
     }
 
-    submit() {
-        let formData = this.newSectionForm.formToArray();
-        this.app.data.updateObject((data) => {
+    submit(app) {
+        let formData = this.formToObject();
+
+        if (!formData['section-name'].length) {
+            this.errors.content('Cannot have empty name');
+            return false;
+        }
+
+        app.data.updateObject((data) => {
             //stuff n things
             let sectionData = {
                 bind: 'a' + Date.now(),
@@ -47,7 +41,8 @@ export default class $NewSectionForm extends $Form {
                 items: []
             };
 
-            $SectionParser.loadSectionDOM(sectionData);
+            let sectionDOMData = $SectionParser.loadSectionDOM(sectionData);
+            //$SectionParser.addOptions(sectionDOMData.section)
             data.sections.push(sectionData);
 
             return data;

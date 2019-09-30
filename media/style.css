@@ -183,13 +183,21 @@ body.popup {
     bottom: 0;
 }
 
-#popup-close:before {
+#popup-close:before,
+#popup-submit:before {
     cursor: pointer;
+}
+
+#popup-close:before {
     content: "❌";
 }
 
+#popup-submit:before {
+    content: "✔️";
+}
+
 form {
-    width: 90%;
+    width: 80%;
     padding: 5px;
 }
 
@@ -197,6 +205,18 @@ form header {
     font-size: 1.2em;
     font-weight: bold;
     margin-bottom: 5px;
+}
+
+form div {
+    display: grid;
+    grid-template-columns: 20% 80%;
+    grid-gap: 5px;
+}
+
+form div label {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 form label:after {
