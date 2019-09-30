@@ -26,4 +26,8 @@ export default class $Utils {
     static getNodeIndex(element) {
         return [...element.parentNode.childNodes].indexOf(element);
     }
+
+    static isPopupEnv() {
+        return document.scripts[0].getAttribute('env') == 'popup';
+    }
 }

@@ -4,8 +4,6 @@ import $SectionParser from './dom/SectionParser.js';
 import $Utils from './Utils.js';
 
 export default class $Application {
-    //popup/options
-    env;
     //movement data
     cur;
     initial = {
@@ -25,14 +23,6 @@ export default class $Application {
             }]
         }]
     };
-
-    constructor() {
-        this.env = document.scripts[0].getAttribute('env');
-    }
-
-    isPopup() {
-        return this.env == 'popup';
-    }
 
     getData() {
         let JSONdata = localStorage.getItem('json');
@@ -64,11 +54,11 @@ export default class $Application {
 
         }
 
-        this.addSectionTile(container);
+        this.addSectionTile();
     }
 
-    addSectionTile(container) {
-        if (this.isPopup()) return;
+    addSectionTile() {
+        if ($Utils.isPopupEnv()) return;
         let sectionTile = new $DOMElement('div')
             .attribute('id', 'add-section')
             .class('section-container');
