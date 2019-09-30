@@ -1,11 +1,13 @@
 import $Application from './class/Application.js';
 import $Event from './class/Event.js';
 import $Popup from './class/form/Popup.js';
+import $Utils from './class/Utils.js';
 
 const app = new $Application();
 const documentEvents = new $Event(document);
 const popupContainer = typeof(overlay) === 'undefined' ? document.createElement('span') : overlay;
 const popup = new $Popup(app, popupContainer);
+
 //get objects from localStorage
 app.getData();
 
@@ -24,7 +26,7 @@ documentEvents.register('DOMContentLoaded', () => {
     documentEvents.register('dragstart', e => e.preventDefault());
 
     //load Popup and option events
-    try {
+    if (!$Utils.isPopupEnv()) {
         const addSectionEvent = new $Event(document.querySelector('#add-section'));
         const popupCloseEvent = new $Event(document.querySelector('#popup-close'));
         const popupSubmitEvent = new $Event(document.querySelector('#popup-submit'));
@@ -38,8 +40,5 @@ documentEvents.register('DOMContentLoaded', () => {
         documentEvents.register('keydown', e => e.keyCode == 27 && popup.close());
 
         addSectionEvent.register('click', popup.showCreateSection);
-    } catch (e) {
-        // console.log('Not applicable in popup env');
     }
-
 });
