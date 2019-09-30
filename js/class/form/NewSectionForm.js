@@ -27,11 +27,6 @@ export default class $NewSectionForm extends $Form {
         return this.form;
     }
 
-    reset() {
-        this.form.el.reset();
-        this.errors.content(null);
-    }
-
     submit(app) {
         let formData = this.formToObject();
 
