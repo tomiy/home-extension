@@ -27,7 +27,7 @@ export default class $Utils {
         return [...element.parentNode.childNodes].indexOf(element);
     }
 
-    static isPopupEnv() {
-        return document.scripts[0].getAttribute('env') == 'popup';
+    static isOptionsEnv() {
+        return document.scripts[0].getAttribute('env') == 'options';
     }
 }
