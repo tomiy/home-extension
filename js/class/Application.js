@@ -63,6 +63,8 @@ export default class $Application {
     }
 
     pickup(label, e) {
+        if ($Utils.isRightClick(e)) return;
+
         this.initial.x = e.clientX;
         this.initial.y = e.clientY;
         this.cur = label.parentNode;
