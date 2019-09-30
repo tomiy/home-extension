@@ -47,19 +47,7 @@ export default class $NewSectionForm extends $Form {
                 items: []
             };
 
-            let items = new $DOMElement('div')
-                .class('items');
-            let section = $SectionParser.createSection(sectionData)
-                .child(items);
-            let sectionContainer = new $DOMElement('div')
-                .class('drag-container', 'section-container')
-                .attribute('id', sectionData.bind)
-                .style('order', localStorage.getItem(sectionData.bind))
-                .data('order', localStorage.getItem(sectionData.bind))
-                .child(section);
-
-            container.appendChild(sectionContainer.el);
-
+            $SectionParser.loadSectionDOM(sectionData);
             data.sections.push(sectionData);
 
             return data;

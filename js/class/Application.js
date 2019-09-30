@@ -53,26 +53,15 @@ export default class $Application {
         let data = this.data.object;
         for (let k in data.sections) {
             let sectionData = data.sections[k];
-            let bind = sectionData.bind;
-            let sectionContainer = new $DOMElement('div')
-                .class('drag-container', 'section-container')
-                .attribute('id', bind)
-                .style('order', localStorage.getItem(bind))
-                .data('order', localStorage.getItem(bind));
-            let section = $SectionParser.createSection(sectionData);
-            let items = new $DOMElement('div')
-                .class('items');
+
+            let sectionDOMData = $SectionParser.loadSectionDOM(sectionData);
 
             for (let i in sectionData.items) {
                 let itemData = sectionData.items[i];
                 let item = $SectionParser.createItem(itemData);
-                items.child(item);
+                sectionDOMData.items.child(item);
             }
 
-
-            section.child(items);
-            sectionContainer.child(section);
-            container.appendChild(sectionContainer.el);
         }
 
         this.addSectionTile(container);
