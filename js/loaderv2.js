@@ -29,11 +29,14 @@ documentEvents.register('DOMContentLoaded', () => {
     try {
         const addSectionEvent = new $Event(document.querySelector('#add-section'));
         const popupCloseEvent = new $Event(document.querySelector('#popup-close'));
+        const popupSubmitEvent = new $Event(document.querySelector('#popup-submit'));
 
         addSectionEvent.setBind(popup);
         popupCloseEvent.setBind(popup);
+        popupSubmitEvent.setBind(popup);
 
         popupCloseEvent.register('click', popup.close);
+        popupSubmitEvent.register('click', popup.submit);
         documentEvents.register('keydown', e => e.keyCode == 27 && popup.close());
 
         addSectionEvent.register('click', popup.showCreateSection);

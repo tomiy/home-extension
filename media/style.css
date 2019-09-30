@@ -164,13 +164,36 @@ body,
     min-height: 100px;
 }
 
-#popup-close {
+#popup-close,
+#popup-submit {
     position: absolute;
-    top: 0;
     right: 0;
+}
+
+#popup-close {
+    top: 0;
+}
+
+#popup-submit {
+    bottom: 0;
 }
 
 #popup-close:before {
     cursor: pointer;
     content: "❌";
+}
+
+form {
+    width: 90%;
+    padding: 5px;
+}
+
+form header {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+form label:after {
+    content: ': ';
 }
