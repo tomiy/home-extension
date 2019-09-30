@@ -15,6 +15,13 @@ export default class $Form {
         return false;
     }
 
+    reset() {
+        if (this.form) {
+            this.form.el.reset();
+            this.errors.content(null);
+        }
+    }
+
     objectToForm(formObj) {
         let header = new $DOMElement('header')
             .content(formObj.header);
