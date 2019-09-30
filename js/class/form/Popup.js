@@ -53,6 +53,7 @@ export default class $Popup {
     submit() {
         if (!this.submitCallback) return;
         (this.submitCallback)();
+        this.close();
     }
 
     //popup functions
@@ -60,15 +61,7 @@ export default class $Popup {
     showCreateSection() {
         if (this.isOpened()) return;
         this.popup.child(this.newSectionForm.makeForm());
-        this.submitCallback = this.submitCreateSection;
+        this.submitCallback = this.newSectionForm.submit;
         this.show();
-    }
-
-    submitCreateSection() {
-        let formData = this.newSectionForm.formToArray();
-        this.app.data.updateJson((json) => {
-            //stuff n things
-            return json;
-        });
     }
 }
