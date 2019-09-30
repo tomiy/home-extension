@@ -2,25 +2,13 @@ import $Utils from './Utils.js';
 
 export default class $Event {
     el;
-    bind;
 
     constructor(el) {
         this.el = el;
     }
 
-    setBind(bind) {
-        this.bind = bind;
-    }
-
-    applyBind(callback) {
-        if (this.bind) {
-            callback = callback.bind(this.bind);
-        }
-        return callback;
-    }
-
     register(name, callback) {
-        this.el.addEventListener(name, this.applyBind(callback));
+        this.el.addEventListener(name, callback);
     }
 
     delegate(name, callback, ...matches) {
@@ -36,7 +24,7 @@ export default class $Event {
                 istarget = target[0].matches(matches);
             }
             if (istarget) {
-                this.applyBind(callback)(target.pop(), e);
+                (callback)(target.pop(), e);
             }
             return istarget;
         });
