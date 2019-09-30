@@ -1,7 +1,7 @@
 export default class $Utils {
     static elementsFromPoint(x, y, l) {
         let element = document.elementFromPoint(x, y);
-        if (element !== l && element !== document.documentElement) {
+        if (element !== l && element !== document.documentElement && !element.dataset.peventblocker) {
             element.dataset.pevents = element.style['pointerEvents'];
             element.style['pointerEvents'] = 'none';
             let result = [element].concat($Utils.elementsFromPoint(x, y, element));
