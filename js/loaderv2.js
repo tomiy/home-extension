@@ -15,6 +15,8 @@ documentEvents.setBind(app);
 documentEvents.register('DOMContentLoaded', () => {
     //load DOM and move events
     app.loadDOM();
+    //display fix for the popup
+    setTimeout(() => container.style.width = '750px', 0);
 
     //delegated because indefinite amount of elements
     documentEvents.delegate('mousedown', app.pickup, '.label');
