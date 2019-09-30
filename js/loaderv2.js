@@ -11,17 +11,14 @@ const popup = new $Popup(app, popupContainer);
 //get objects from localStorage
 app.getData();
 
-//bind main events to app
-documentEvents.setBind(app);
-
 documentEvents.register('DOMContentLoaded', () => {
     //load DOM and move events
     app.loadDOM();
 
     //delegated because indefinite amount of elements
-    documentEvents.delegate('mousedown', app.pickup, '.label');
-    documentEvents.register('mousemove', app.move);
-    documentEvents.register('mouseup', app.drop);
+    documentEvents.delegate('mousedown', (label, e) => app.pickup(label, e), '.label');
+    documentEvents.register('mousemove', e => app.move(e));
+    documentEvents.register('mouseup', () => app.drop());
 
     documentEvents.register('dragstart', e => e.preventDefault());
 
@@ -33,15 +30,11 @@ documentEvents.register('DOMContentLoaded', () => {
         const popupCloseEvent = new $Event(document.querySelector('#popup-close'));
         const popupSubmitEvent = new $Event(document.querySelector('#popup-submit'));
 
-        addSectionEvent.setBind(popup);
-        popupCloseEvent.setBind(popup);
-        popupSubmitEvent.setBind(popup);
-
-        popupCloseEvent.register('click', popup.close);
-        popupSubmitEvent.register('click', popup.submit);
+        popupCloseEvent.register('click', () => popup.close());
+        popupSubmitEvent.register('click', () => popup.submit());
         documentEvents.register('keydown', e => e.keyCode == 27 && popup.close());
 
-        addSectionEvent.register('click', popup.showCreateSection);
+        addSectionEvent.register('click', () => popup.showCreateSection());
         documentEvents.delegate('contextmenu', (label, e) => {
             e.preventDefault();
             console.log('Open section context menu from', label.closest('.section'));

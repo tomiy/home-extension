@@ -44,7 +44,7 @@ export default class $Popup {
     }
 
     close() {
-        this.popup.content('');
+        this.popup.content(null);
         this.overlay.style.opacity = 0;
         this.overlay.style.pointerEvents = 'none';
         this.opened = false;
