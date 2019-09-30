@@ -6,6 +6,7 @@ export default class $Popup {
     popup;
     overlay;
     opened = false;
+    submitCallback;
 
     //forms
     newSectionForm;
@@ -15,12 +16,16 @@ export default class $Popup {
 
         let closebtn = new $DOMElement('span')
             .attribute('id', 'popup-close');
+        let submitbtn = new $DOMElement('button')
+            .attribute('id', 'popup-submit')
+            .content('Save');
         this.popup = new $DOMElement('span')
             .attribute('id', 'popup-content');
         let popupContainer = new $DOMElement('div')
             .attribute('id', 'popup')
             .child(closebtn)
-            .child(this.popup);
+            .child(this.popup)
+            .child(submitbtn);
         this.overlay = overlay;
         this.overlay.appendChild(popupContainer.el);
 
@@ -45,9 +50,17 @@ export default class $Popup {
         this.opened = false;
     }
 
+    submit() {
+        if (!this.submitCallback) return;
+        (this.submitCallback)();
+    }
+
+    //popup functions
+    //------------------------
     showCreateSection() {
         if (this.isOpened()) return;
         this.popup.child(this.newSectionForm.makeForm());
+        this.submitCallback = this.submitCreateSection;
         this.show();
     }
 
