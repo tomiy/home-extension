@@ -2,6 +2,26 @@ import $DOMElement from './DOMElement.js';
 import $Utils from '../Utils.js';
 
 export default class $SectionParser {
+    static loadSectionDOM(sectionData) {
+        let items = new $DOMElement('div')
+            .class('items');
+        let section = $SectionParser.createSection(sectionData)
+            .child(items);
+        let sectionContainer = new $DOMElement('div')
+            .class('drag-container', 'section-container')
+            .attribute('id', sectionData.bind)
+            .style('order', localStorage.getItem(sectionData.bind))
+            .data('order', localStorage.getItem(sectionData.bind))
+            .child(section);
+        container.appendChild(sectionContainer.el);
+
+        return {
+            items: items,
+            section: section,
+            sectionContainer: sectionContainer
+        };
+    }
+
     static createSection(sectionData) {
         let labeltxt = new $DOMElement('span')
             .content(sectionData.label);
