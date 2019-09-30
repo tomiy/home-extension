@@ -5,7 +5,9 @@ export default class $Form {
     errors;
 
     generate() {
-        this.form = new $DOMElement('form');
+        if (!this.form) {
+            this.form = new $DOMElement('form');
+        }
         return this.form;
     }
 
