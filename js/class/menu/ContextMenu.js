@@ -11,14 +11,14 @@ export default class $ContextMenu {
         }];
     }
 
-    generate() {
+    generate(args) {
         ctxmenu.innerHTML = null;
         this.items.forEach((item) => {
             let itemDOM = new $DOMElement('div')
                 .class('item')
                 .content(item.label);
             new $Event(itemDOM.el)
-                .register('click', () => (item.callback)());
+                .register('click', () => (item.callback)(args));
             ctxmenu.appendChild(itemDOM.el);
         });
     }

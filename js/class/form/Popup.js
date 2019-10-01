@@ -1,14 +1,13 @@
 import $DOMElement from "../dom/DOMElement.js";
 import $NewSectionForm from "./NewSectionForm.js";
+import $EditSectionForm from "./EditSectionForm.js";
 
 export default class $Popup {
     app;
     popup;
     opened = false;
     submitCallback;
-
-    //forms
-    newSectionForm;
+    forms;
 
     constructor(app) {
         this.app = app; //to update the JSONObject
@@ -27,15 +26,21 @@ export default class $Popup {
         overlay.appendChild(popupContainer.el);
 
         //init forms
-        this.newSectionForm = new $NewSectionForm();
+        this.forms = {
+            'newSection': new $NewSectionForm(),
+            'editSection': new $EditSectionForm()
+        };
     }
 
     isOpened() {
         return this.opened;
     }
 
-    show() {
+    show(formKey, args) {
         if (this.isOpened()) return;
+        let form = this.forms[formKey];
+        this.popup.child(form.generate(args));
+        this.submitCallback = form.submit.bind(form);
         this.opened = true;
         overlay.style.pointerEvents = 'all';
         overlay.style.opacity = 1;
@@ -53,13 +58,5 @@ export default class $Popup {
         if ((this.submitCallback)(this.app) !== false) {
             this.close();
         }
-    }
-
-    //popup functions
-    //------------------------
-    showCreateSection() {
-        this.popup.child(this.newSectionForm.generate());
-        this.submitCallback = this.newSectionForm.submit.bind(this.newSectionForm);
-        this.show();
     }
 }
