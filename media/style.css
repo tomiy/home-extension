@@ -77,7 +77,7 @@ form span {
     transition: opacity 0.1s, box-shadow 0.1s;
 }
 
-#ctxmenu div {
+#ctxmenu.shown div {
     pointer-events: all;
 }
 
