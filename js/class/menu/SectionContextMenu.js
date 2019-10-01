@@ -4,8 +4,8 @@ export default class $SectionContextMenu extends $ContextMenu {
     constructor(popup) {
         super();
         this.items = [{
-            label: 'Test',
-            callback: () => popup.showCreateSection() //placeholder
+            label: 'Edit section',
+            callback: (sectionlb) => popup.show('editSection', sectionlb[0].closest('.section-container'))
         }];
     }
 }
