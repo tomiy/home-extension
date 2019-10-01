@@ -36,7 +36,7 @@ export default class $SectionParser {
             localStorage.setItem(sectionData.bind, parseInt(localStorage.length) + 1);
         }
 
-        if (sectionData.color) label.style('backgroundColor', `#${sectionData.color}`);
+        if (sectionData.color) label.style('backgroundColor', '#' + sectionData.color);
         label.style('color', $Utils.rgblum(label.el.style.backgroundColor));
 
         return section;
@@ -66,5 +66,21 @@ export default class $SectionParser {
         setTimeout(() => item.el.querySelectorAll('img').forEach(image => image.src = image.dataset.src), 0);
 
         return item;
+    }
+
+    static updateSectionDOM(sectionData) {
+        let section = document.getElementById(sectionData.bind);
+        section.querySelector('.label span').innerHTML = sectionData.label;
+        section.querySelector('.label').style.backgroundColor = '#' + sectionData.color;
+    }
+
+    static getSectionId(obj, sectionBind) {
+        return Object
+            .keys(obj.sections)
+            .filter(i => obj.sections[i].bind == sectionBind)[0];
+    }
+
+    static getSection(obj, sectionBind) {
+        return obj.sections[_sectionid(sectionBind)];
     }
 }

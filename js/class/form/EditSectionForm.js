@@ -1,20 +1,29 @@
 import $Form from "./Form.js";
+import $Utils from "../Utils.js";
 import $SectionParser from "../dom/SectionParser.js";
 
 export default class $NewSectionForm extends $Form {
-    generate() {
+    generate(section) {
         if (!this.form) {
             let formObj = {
-                header: 'New Section',
+                header: 'Edit Section',
                 fields: [{
                         type: 'text',
                         name: 'section-name',
-                        label: 'Name'
+                        label: 'Name',
+                        value: section.querySelector('.label span').innerHTML
+                    },
+                    {
+                        type: 'hidden',
+                        name: 'section-id',
+                        label: null,
+                        value: section.id
                     },
                     {
                         type: 'color',
                         name: 'section-color',
-                        label: 'Color'
+                        label: 'Color',
+                        value: $Utils.rgb2hex(section.querySelector('.label').style.backgroundColor)
                     }
                 ]
             };
@@ -36,15 +45,12 @@ export default class $NewSectionForm extends $Form {
         }
 
         app.data.updateObject((data) => {
-            let sectionData = {
-                bind: 'a' + Date.now(),
-                label: formData['section-name'],
-                color: formData['section-color'].substring(1),
-                items: []
-            };
+            let sectionId = $SectionParser.getSectionId(data, formData['section-id']);
 
-            $SectionParser.loadSectionDOM(sectionData);
-            data.sections.push(sectionData);
+            data.sections[sectionId].label = formData['section-name'];
+            data.sections[sectionId].color = formData['section-color'].substring(1);
+
+            $SectionParser.updateSectionDOM(data.sections[sectionId]);
 
             return data;
         });

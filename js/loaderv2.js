@@ -41,9 +41,9 @@ documentEvents.register('DOMContentLoaded', () => {
         documentEvents.register('click', () => menu.close());
 
         //popup events
-        addSectionEvent.register('click', () => popup.showCreateSection());
+        addSectionEvent.register('click', () => popup.show('newSection'));
 
         //menu events
-        documentEvents.delegate('contextmenu', (label, e) => menu.openSectionContextMenu(label, e), '.label');
+        documentEvents.delegate('contextmenu', (label, e) => menu.open(e, 'section', label), '.label');
     }
 });
