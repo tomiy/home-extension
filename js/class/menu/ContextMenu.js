@@ -1,9 +1,25 @@
+import $DOMElement from "../dom/DOMElement.js";
+import $Event from "../Event.js";
+
 export default class $ContextMenu {
     items;
 
-    display() {
+    constructor() {
+        this.items = [{
+            label: 'Test',
+            callback: () => console.log('test')
+        }];
+    }
+
+    generate() {
+        ctxmenu.innerHTML = null;
         this.items.forEach((item) => {
-            //display 
+            let itemDOM = new $DOMElement('div')
+                .class('item')
+                .content(item.label);
+            new $Event(itemDOM.el)
+                .register('click', () => (item.callback)());
+            ctxmenu.appendChild(itemDOM.el);
         });
     }
 }

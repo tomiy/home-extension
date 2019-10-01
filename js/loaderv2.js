@@ -2,6 +2,7 @@ import $Application from './class/Application.js';
 import $Event from './class/Event.js';
 import $Popup from './class/form/Popup.js';
 import $Utils from './class/Utils.js';
+import $Menu from "./class/menu/Menu.js";
 
 const app = new $Application();
 const documentEvents = new $Event(document);
@@ -22,8 +23,8 @@ documentEvents.register('DOMContentLoaded', () => {
 
     //load Popup and option events
     if ($Utils.isOptionsEnv()) {
-        const popupContainer = overlay;
-        const popup = new $Popup(app, popupContainer);
+        const popup = new $Popup(app);
+        const menu = new $Menu(popup);
 
         app.addSectionTile();
 
@@ -31,15 +32,18 @@ documentEvents.register('DOMContentLoaded', () => {
         const popupCloseEvent = new $Event(document.querySelector('#popup-close'));
         const popupSubmitEvent = new $Event(document.querySelector('#popup-submit'));
 
+        //popup default events
         popupCloseEvent.register('click', () => popup.close());
         popupSubmitEvent.register('click', () => popup.submit());
         documentEvents.register('keydown', e => e.keyCode == 27 && popup.close());
 
+        //menu default events
+        documentEvents.register('click', () => menu.close());
+
+        //popup events
         addSectionEvent.register('click', () => popup.showCreateSection());
-        documentEvents.delegate('contextmenu', (label, e) => {
-            e.preventDefault();
-            console.log('Open section context menu from', label.closest('.section'));
-            return false;
-        }, '.label');
+
+        //menu events
+        documentEvents.delegate('contextmenu', (label, e) => menu.openSectionContextMenu(label, e), '.label');
     }
 });
