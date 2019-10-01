@@ -4,14 +4,13 @@ import $NewSectionForm from "./NewSectionForm.js";
 export default class $Popup {
     app;
     popup;
-    overlay;
     opened = false;
     submitCallback;
 
     //forms
     newSectionForm;
 
-    constructor(app, overlay) {
+    constructor(app) {
         this.app = app; //to update the JSONObject
 
         let closebtn = new $DOMElement('span')
@@ -25,8 +24,7 @@ export default class $Popup {
             .child(closebtn)
             .child(this.popup)
             .child(submitbtn);
-        this.overlay = overlay;
-        this.overlay.appendChild(popupContainer.el);
+        overlay.appendChild(popupContainer.el);
 
         //init forms
         this.newSectionForm = new $NewSectionForm();
@@ -39,14 +37,14 @@ export default class $Popup {
     show() {
         if (this.isOpened()) return;
         this.opened = true;
-        this.overlay.style.pointerEvents = 'all';
-        this.overlay.style.opacity = 1;
+        overlay.style.pointerEvents = 'all';
+        overlay.style.opacity = 1;
     }
 
     close() {
         this.popup.content(null);
-        this.overlay.style.opacity = 0;
-        this.overlay.style.pointerEvents = 'none';
+        overlay.style.opacity = 0;
+        overlay.style.pointerEvents = 'none';
         this.opened = false;
     }
 
