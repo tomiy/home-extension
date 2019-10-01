@@ -4,32 +4,30 @@ import $SectionParser from "../dom/SectionParser.js";
 
 export default class $NewSectionForm extends $Form {
     generate(section) {
-        if (!this.form) {
-            let formObj = {
-                header: 'Edit Section',
-                fields: [{
-                        type: 'text',
-                        name: 'section-name',
-                        label: 'Name',
-                        value: section.querySelector('.label span').innerHTML
-                    },
-                    {
-                        type: 'hidden',
-                        name: 'section-id',
-                        label: null,
-                        value: section.id
-                    },
-                    {
-                        type: 'color',
-                        name: 'section-color',
-                        label: 'Color',
-                        value: $Utils.rgb2hex(section.querySelector('.label').style.backgroundColor)
-                    }
-                ]
-            };
+        let formObj = {
+            header: 'Edit Section',
+            fields: [{
+                    type: 'text',
+                    name: 'section-name',
+                    label: 'Name',
+                    value: section.querySelector('.label span').innerHTML
+                },
+                {
+                    type: 'hidden',
+                    name: 'section-id',
+                    label: null,
+                    value: section.id
+                },
+                {
+                    type: 'color',
+                    name: 'section-color',
+                    label: 'Color',
+                    value: $Utils.rgb2hex(section.querySelector('.label').style.backgroundColor)
+                }
+            ]
+        };
 
-            this.objectToForm(formObj);
-        }
+        this.objectToForm(formObj);
 
         this.reset();
 
