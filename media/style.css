@@ -16,8 +16,8 @@ body.popup {
 }
 
 form {
+    margin-bottom: 15px;
     padding: 5px;
-    width: 80%;
 }
 
 form header {
@@ -28,8 +28,9 @@ form header {
 
 form div {
     display: grid;
-    grid-template-columns: 20% 80%;
+    grid-template-columns: 15% 80%;
     grid-gap: 5px;
+    margin: 2px 0;
 }
 
 form div input {
@@ -119,21 +120,20 @@ form span {
     position: relative;
     background: white;
     min-width: 300px;
-    min-height: 100px;
 }
 
 #popup-close,
 #popup-submit {
     position: absolute;
-    right: 0;
+    bottom: 0;
 }
 
 #popup-close {
-    top: 0;
+    left: 0;
 }
 
 #popup-submit {
-    bottom: 0;
+    right: 0;
 }
 
 #popup-close:before,
