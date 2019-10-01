@@ -18,11 +18,13 @@ export default class $Menu {
         menu.generate(args);
         ctxmenu.style.left = e.clientX + 'px';
         ctxmenu.style.top = e.clientY + 'px';
-        ctxmenu.style.boxShadow = '2px 2px 2px 0px rgba(0, 0, 0, 0.5)';
         ctxmenu.style.opacity = 1;
+        ctxmenu.style.boxShadow = '2px 2px 2px 0px rgba(0, 0, 0, 0.5)';
+        ctxmenu.classList.add('shown');
     }
 
     close() {
+        ctxmenu.classList.remove('shown');
         ctxmenu.style.boxShadow = null;
         ctxmenu.style.opacity = 0;
     }

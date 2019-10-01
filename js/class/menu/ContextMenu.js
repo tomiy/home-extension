@@ -16,6 +16,7 @@ export default class $ContextMenu {
         this.items.forEach((item) => {
             let itemDOM = new $DOMElement('div')
                 .class('item')
+                .data('peventblocker', 1)
                 .content(item.label);
             new $Event(itemDOM.el)
                 .register('click', () => (item.callback)(args));
