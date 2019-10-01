@@ -6,11 +6,16 @@ export default class $Menu {
     constructor(popup) {
         this.popup = popup;
 
-        this.sectionContextMenu = new $SectionContextMenu(popup);
+        this.menus = {
+            'section': new $SectionContextMenu(popup)
+        }
     }
 
-    open(e) {
+    open(e, menuKey, ...args) {
         e.preventDefault();
+        this.close();
+        let menu = this.menus[menuKey];
+        menu.generate(args);
         ctxmenu.style.left = e.clientX + 'px';
         ctxmenu.style.top = e.clientY + 'px';
         ctxmenu.style.boxShadow = '2px 2px 2px 0px rgba(0, 0, 0, 0.5)';
@@ -20,11 +25,5 @@ export default class $Menu {
     close() {
         ctxmenu.style.boxShadow = null;
         ctxmenu.style.opacity = 0;
-    }
-
-    openSectionContextMenu(label, e) {
-        this.close();
-        this.sectionContextMenu.generate();
-        this.open(e);
     }
 }

@@ -10,9 +10,19 @@ export default class $Utils {
         } else return [];
     };
 
+    static jsrgb2array(jsrgb) {
+        return jsrgb.substr(4, jsrgb.indexOf(')') - 4).split(',');
+    }
+
+    static rgb2hex(rgb) {
+        return '#' + $Utils.jsrgb2array(rgb)
+            .map((color) => ('0' + parseInt(color).toString(16)).substr(-2))
+            .join('');
+    }
+
     static rgblum(rgb) {
         if (!rgb) return '#000';
-        rgb = rgb.substr(4, rgb.length - 5).split(',');
+        rgb = $Utils.jsrgb2array(rgb);
         let lrgb = [];
         rgb.forEach(c => {
             let cx = c / 255;
