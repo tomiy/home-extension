@@ -35,6 +35,11 @@ export default class $Form {
                 .attribute('type', field.type)
                 .attribute('id', field.name)
                 .attribute('name', field.name);
+            // fix because default value isn't always set and color inputs can't be empty
+            if(field.type == 'color') {
+                input.el.defaultValue = '#aabbcc';
+            }
+
             let label = new $DOMElement('label')
                 .attribute('for', field.name)
                 .content(field.label);
