@@ -70,8 +70,10 @@ export default class $SectionParser {
 
     static updateSectionDOM(sectionData) {
         let section = document.getElementById(sectionData.bind);
-        section.querySelector('.label span').innerHTML = sectionData.label;
-        section.querySelector('.label').style.backgroundColor = '#' + sectionData.color;
+        let label = section.querySelector('.label');
+        label.querySelector('span').innerHTML = sectionData.label;
+        label.style.backgroundColor = '#' + sectionData.color;
+        label.style.color = $Utils.rgblum(label.style.backgroundColor);
     }
 
     static getSectionId(obj, sectionBind) {
