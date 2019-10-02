@@ -1,16 +1,14 @@
 import $Form from "./Form.js";
-import $Utils from "../Utils.js";
 import $SectionParser from "../dom/SectionParser.js";
 
 export default class $DeleteSectionForm extends $Form {
-    generate(section) {
+    generate(sectionId) {
         let formObj = {
             header: 'Delete Section?',
             fields: [{
                 type: 'hidden',
                 name: 'section-id',
-                label: null,
-                value: section.id
+                value: sectionId
             }]
         };
 

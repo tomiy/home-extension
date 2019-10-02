@@ -30,7 +30,7 @@ export default class $NewSectionForm extends $Form {
     submit(app) {
         let formData = this.formToObject();
 
-        if (!formData['section-name'].length) {
+        if (!formData['section-name'].trim().length) {
             this.errors.content('Cannot have empty name');
             return false;
         }

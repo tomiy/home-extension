@@ -45,5 +45,6 @@ documentEvents.register('DOMContentLoaded', () => {
 
         //menu events
         documentEvents.delegate('contextmenu', (label, e) => menu.open(e, 'section', label), '.label');
+        documentEvents.delegate('contextmenu', (item, e) => menu.open(e, 'item', item), '.item');
     }
 });

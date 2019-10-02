@@ -41,6 +41,12 @@ export default class $Utils {
         return e.which === 3 || e.button === 2;
     }
 
+    static isURL(string) {
+        let a = document.createElement('a');
+        a.href = string;
+        return (a.host && a.host != window.location.host);
+    }
+
     static isOptionsEnv() {
         return document.scripts[0].getAttribute('env') == 'options';
     }

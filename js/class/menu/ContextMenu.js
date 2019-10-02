@@ -15,7 +15,7 @@ export default class $ContextMenu {
         ctxmenu.innerHTML = null;
         this.items.forEach((item) => {
             let itemDOM = new $DOMElement('div')
-                .class('item')
+                .class('ctxmenu-item')
                 .data('peventblocker', 1)
                 .content(item.label);
             new $Event(itemDOM.el)

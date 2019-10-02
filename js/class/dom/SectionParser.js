@@ -69,8 +69,7 @@ export default class $SectionParser {
     }
 
     static updateSectionDOM(sectionData) {
-        let section = document.getElementById(sectionData.bind);
-        let label = section.querySelector('.label');
+        let label = document.querySelector('#' + sectionData.bind + ' .label');
         label.querySelector('span').innerHTML = sectionData.label;
         label.style.backgroundColor = '#' + sectionData.color;
         label.style.color = $Utils.rgblum(label.style.backgroundColor);
