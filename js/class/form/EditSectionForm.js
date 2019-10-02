@@ -2,7 +2,7 @@ import $Form from "./Form.js";
 import $Utils from "../Utils.js";
 import $SectionParser from "../dom/SectionParser.js";
 
-export default class $NewSectionForm extends $Form {
+export default class $EditSectionForm extends $Form {
     generate(section) {
         let formObj = {
             header: 'Edit Section',
