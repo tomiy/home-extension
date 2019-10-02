@@ -188,39 +188,6 @@ form span {
     font-weight: bold;
 }
 
-.editabletxt {
-    cursor: text;
-}
-
-.editabletxt::before {
-    content: "✎ ";
-}
-
-.delete::before {
-    right: 0;
-    content: "❌";
-}
-
-.add::before {
-    left: 0;
-    content: "➕";
-}
-
-.delete::before,
-.add::before {
-    position: absolute;
-    visibility: hidden;
-    cursor: pointer;
-    width: 30px;
-    font-size: 1.2em;
-}
-
-.item:hover .delete::before,
-.label:hover .delete::before,
-.label:hover .add::before {
-    visibility: visible;
-}
-
 .items {
     max-height: 120px;
     overflow-x: hidden;
