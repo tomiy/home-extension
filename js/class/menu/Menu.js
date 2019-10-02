@@ -1,4 +1,5 @@
 import $SectionContextMenu from "./SectionContextMenu.js";
+import $ItemContextMenu from "./ItemContextMenu.js";
 
 export default class $Menu {
     popup;
@@ -7,7 +8,8 @@ export default class $Menu {
         this.popup = popup;
 
         this.menus = {
-            'section': new $SectionContextMenu(popup)
+            'section': new $SectionContextMenu(popup),
+            'item': new $ItemContextMenu(popup)
         }
     }
 

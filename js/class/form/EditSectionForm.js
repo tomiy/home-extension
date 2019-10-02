@@ -3,26 +3,25 @@ import $Utils from "../Utils.js";
 import $SectionParser from "../dom/SectionParser.js";
 
 export default class $EditSectionForm extends $Form {
-    generate(section) {
+    generate(sectionlb) {
         let formObj = {
             header: 'Edit Section',
             fields: [{
                     type: 'text',
                     name: 'section-name',
                     label: 'Name',
-                    value: section.querySelector('.label span').innerHTML
+                    value: sectionlb.innerText
                 },
                 {
                     type: 'hidden',
                     name: 'section-id',
-                    label: null,
-                    value: section.id
+                    value: sectionlb.closest('.section-container').id
                 },
                 {
                     type: 'color',
                     name: 'section-color',
                     label: 'Color',
-                    value: $Utils.rgb2hex(section.querySelector('.label').style.backgroundColor)
+                    value: $Utils.rgb2hex(sectionlb.style.backgroundColor)
                 }
             ]
         };
@@ -37,7 +36,7 @@ export default class $EditSectionForm extends $Form {
     submit(app) {
         let formData = this.formToObject();
 
-        if (!formData['section-name'].length) {
+        if (!formData['section-name'].trim().length) {
             this.errors.content('Cannot have empty name');
             return false;
         }
