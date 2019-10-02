@@ -4,29 +4,27 @@ import $Utils from "../Utils.js";
 
 export default class $NewItemForm extends $Form {
     generate(sectionId) {
-        if (!this.form) {
-            let formObj = {
-                header: 'New Item',
-                fields: [{
-                        type: 'text',
-                        name: 'item-name',
-                        label: 'Name'
-                    },
-                    {
-                        type: 'text',
-                        name: 'item-link',
-                        label: 'Link'
-                    },
-                    {
-                        type: 'hidden',
-                        name: 'section-id',
-                        value: sectionId
-                    }
-                ]
-            };
+        let formObj = {
+            header: 'New Item',
+            fields: [{
+                    type: 'text',
+                    name: 'item-name',
+                    label: 'Name'
+                },
+                {
+                    type: 'text',
+                    name: 'item-link',
+                    label: 'Link'
+                },
+                {
+                    type: 'hidden',
+                    name: 'section-id',
+                    value: sectionId
+                }
+            ]
+        };
 
-            this.objectToForm(formObj);
-        }
+        this.objectToForm(formObj);
 
         this.reset();
 
