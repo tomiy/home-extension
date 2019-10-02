@@ -1,6 +1,7 @@
 import $DOMElement from "../dom/DOMElement.js";
 import $NewSectionForm from "./NewSectionForm.js";
 import $EditSectionForm from "./EditSectionForm.js";
+import $DeleteSectionForm from "./DeleteSectionForm.js";
 
 export default class $Popup {
     app;
@@ -28,7 +29,8 @@ export default class $Popup {
         //init forms
         this.forms = {
             'newSection': new $NewSectionForm(),
-            'editSection': new $EditSectionForm()
+            'editSection': new $EditSectionForm(),
+            'deleteSection': new $DeleteSectionForm()
         };
     }
 
