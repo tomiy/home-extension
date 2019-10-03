@@ -2,11 +2,15 @@
 https://chrome.google.com/webstore/detail/home/nmfhcjpmgnoecpbdmbohnamdmhmhbfdf
 
 #### Tips:
-When you install or delete every tile there's a default tile with 1 item that automatically gets added
+When you install, or if you delete every tile, there's a default tile with 1 item that automatically gets added
 
 Right click the extension icon and go to "Options" to add, remove and move tiles and items
+Right click sections and items to open action menus
 
 You can also move tiles in the popup
 
-#### Roadmap (lol):
-I'm planning to add a color picker and editable url fields at some point maybe but working with dialogs is so much simpler for now that i didn't bother
+#### Roadmap:
+* More cutsomizable items => colors?
+* Small tutorial (because right click menus aren't always obvious)
+* Reorder items in section
+* Move items from section to section
