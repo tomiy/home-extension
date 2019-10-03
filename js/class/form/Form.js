@@ -34,15 +34,18 @@ export default class $Form {
             let input = new $DOMElement('input')
                 .attribute('type', field.type)
                 .attribute('id', field.name)
-                .attribute('name', field.name)
-                .attribute('value', field.value || '');
+                .attribute('name', field.name);
+
+            if (field.value != null) {
+                input.attribute('value', field.value);
+            }
             // fix because default value isn't always set and color inputs can't be empty
-            if(field.type == 'color' && !field.value) {
+            if (field.type == 'color' && !field.value) {
                 input.el.defaultValue = '#aabbcc';
             }
 
             let DOMField = new $DOMElement('div');
-            if(field.label) {
+            if (field.label) {
                 let label = new $DOMElement('label')
                     .attribute('for', field.name)
                     .content(field.label);

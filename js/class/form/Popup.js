@@ -4,6 +4,7 @@ import $EditSectionForm from "./EditSectionForm.js";
 import $DeleteSectionForm from "./DeleteSectionForm.js";
 import $NewItemForm from "./NewItemForm.js";
 import $DeleteItemForm from "./DeleteItemForm.js";
+import $EditItemForm from "./EditItemForm.js";
 
 export default class $Popup {
     app;
@@ -34,6 +35,7 @@ export default class $Popup {
             'editSection': new $EditSectionForm(),
             'deleteSection': new $DeleteSectionForm(),
             'newItem': new $NewItemForm(),
+            'editItem': new $EditItemForm(),
             'deleteItem': new $DeleteItemForm()
         };
     }
