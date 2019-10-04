@@ -42,16 +42,25 @@ export default class $SectionParser {
         return section;
     }
 
-    static createItem(itemData) {
-        let host;
+    static getURLWithFallback(urlInput) {
+        let url;
         try {
-            host = new URL(itemData.url);
+            url = new URL(urlInput);
+            if (!url.hostname) {
+                throw new Throwable();
+            }
         } catch (e) {
-            host = new URL('http://example.com');
+            url = new URL('http://example.com');
         }
+        return url;
+    }
+
+    static createItem(itemData) {
+        let host = $SectionParser.getURLWithFallback(itemData.url);
 
         let icon = new $DOMElement('img')
-            .data('src', 'https://favicons.githubusercontent.com/' + host.hostname);
+            .attribute('loading', 'lazy')
+            .attribute('src', 'https://favicons.githubusercontent.com/' + host.hostname);
         let urltxt = new $DOMElement('span')
             .content(itemData.label);
         let url = new $DOMElement('a')
@@ -62,8 +71,6 @@ export default class $SectionParser {
             .class('item')
             .child(icon)
             .child(url);
-
-        setTimeout(() => item.el.querySelectorAll('img').forEach(image => image.src = image.dataset.src), 0);
 
         return item;
     }
@@ -84,7 +91,7 @@ export default class $SectionParser {
         );
         item.querySelector('a span').innerHTML = itemData.label;
         let link = item.querySelector('a');
-        link.href = itemData.url;
+        link.href = $SectionParser.getURLWithFallback(itemData.url);
         item.querySelector('img').src = 'https://favicons.githubusercontent.com/' + link.hostname;
     }
 
