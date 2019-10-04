@@ -84,15 +84,15 @@ export default class $SectionParser {
 
     static updateItemDOM(sectionData, itemIndex) {
         let itemData = sectionData.items[itemIndex];
-        console.log('#' + sectionData.bind + ' .item:nth-child(' + +')');
         let itemDOMIndex = parseInt(itemIndex) + 1;
         let item = document.querySelector(
             '#' + sectionData.bind + ' .item:nth-child(' + itemDOMIndex + ')'
         );
         item.querySelector('a span').innerHTML = itemData.label;
         let link = item.querySelector('a');
-        link.href = $SectionParser.getURLWithFallback(itemData.url);
-        item.querySelector('img').src = 'https://favicons.githubusercontent.com/' + link.hostname;
+        link.href = itemData.url;
+        let host = $SectionParser.getURLWithFallback(itemData.url);
+        item.querySelector('img').src = 'https://favicons.githubusercontent.com/' + host.hostname;
     }
 
     static getSectionId(obj, sectionBind) {
