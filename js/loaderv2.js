@@ -39,6 +39,7 @@ documentEvents.register('DOMContentLoaded', () => {
 
         //menu default events
         documentEvents.register('click', () => menu.close());
+        documentEvents.delegate('mousedown', () => menu.close(), '.label');
 
         //popup events
         addSectionEvent.register('click', () => popup.show('newSection'));
