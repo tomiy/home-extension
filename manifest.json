@@ -1,14 +1,15 @@
 {
     "manifest_version": 2,
     "name": "Home",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "icons": {
         "16": "media/icon16.png",
         "48": "media/icon48.png",
         "128": "media/icon128.png"
     },
     "permissions": [
-        "storage"
+        "storage",
+        "file://*/*"
     ],
     "browser_action": {
         "default_popup": "index.html"
