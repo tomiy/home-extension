@@ -44,7 +44,7 @@ export default class $Utils {
     static isURL(string) {
         let a = document.createElement('a');
         a.href = string;
-        return (a.host && a.host != window.location.host);
+        return ((a.host && a.host != window.location.host) || a.protocol == 'file:');
     }
 
     static isOptionsEnv() {
