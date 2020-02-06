@@ -25,7 +25,7 @@ export default class $DeleteSectionForm extends $Form {
         app.data.updateObject((data) => {
             let sectionId = $SectionParser.getSectionId(data, formData['section-id']);
 
-            document.querySelector(`#${formData['section-id']}`).remove();
+            document.getElementById(formData['section-id']).remove();
             data.sections.splice(sectionId, 1);
 
             return data;
