@@ -32,9 +32,10 @@ export default class $DeleteItemForm extends $Form {
         app.data.updateObject((data) => {
             let sectionId = $SectionParser.getSectionId(data, formData['section-id']);
 
-            document.querySelector(
-                `#${formData['section-id']} .item:nth-child(${parseInt(formData['item-index']) + 1})`
-            ).remove();
+            document
+                .getElementById(formData['section-id'])
+                .querySelector(`.item:nth-child(${parseInt(formData['item-index']) + 1})`)
+                .remove();
             data.sections[sectionId].items.splice(formData['item-index'], 1);
 
             return data;

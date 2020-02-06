@@ -71,10 +71,16 @@ form span {
     border: 1px solid black;
     text-align: center;
     z-index: 2;
+    box-shadow: none;
     /* for click events */
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.1s, box-shadow 0.1s;
+}
+
+#ctxmenu.shown {
+    box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.5);
+    opacity: 1;
 }
 
 #ctxmenu.shown div {
@@ -176,6 +182,13 @@ form span {
     background: repeating-linear-gradient(45deg, #ccc, #ccc 5px, #ddd 5px, #ddd 10px);
     width: 100%;
     height: inherit;
+    z-index: initial;
+    box-shadow: none;
+}
+
+.section.dragged {
+    z-index: 1000;
+    box-shadow: 0px 10px 5px 0px rgba(0, 0, 0, 0.5);
 }
 
 .label {
