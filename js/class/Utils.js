@@ -1,11 +1,11 @@
 export default class $Utils {
     static elementsFromPoint(x, y, l) {
-        let element = document.elementFromPoint(x, y);
-        if (element !== l && element !== document.documentElement && !element.dataset.peventblocker) {
-            element.dataset.pevents = element.style['pointerEvents'];
-            element.style['pointerEvents'] = 'none';
-            let result = [element].concat($Utils.elementsFromPoint(x, y, element));
-            element.style['pointerEvents'] = element.dataset.pevents;
+        let e = document.elementFromPoint(x, y);
+        if (e !== l && e !== document.documentElement && !e.dataset.peventblocker) {
+            e.dataset.pevents = e.style['pointerEvents'];
+            e.style['pointerEvents'] = 'none';
+            let result = [e].concat($Utils.elementsFromPoint(x, y, e));
+            e.style['pointerEvents'] = e.dataset.pevents;
             return result;
         } else return [];
     };

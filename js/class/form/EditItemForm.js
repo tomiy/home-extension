@@ -58,9 +58,6 @@ export default class $EditItemForm extends $Form {
 
         app.data.updateObject((data) => {
             let sectionId = $SectionParser.getSectionId(data, formData['section-id']);
-            let itemDOM = document.querySelector(
-                `#${formData['section-id']} .item:nth-child(${parseInt(formData['item-index']) + 1})`
-            );
 
             data.sections[sectionId].items[formData['item-index']].label = formData['item-name'];
             data.sections[sectionId].items[formData['item-index']].url = formData['item-link'];

@@ -85,9 +85,9 @@ export default class $SectionParser {
     static updateItemDOM(sectionData, itemIndex) {
         let itemData = sectionData.items[itemIndex];
         let itemDOMIndex = parseInt(itemIndex) + 1;
-        let item = document.querySelector(
-            '#' + sectionData.bind + ' .item:nth-child(' + itemDOMIndex + ')'
-        );
+        let item = document
+            .getElementById(sectionData.bind)
+            .querySelector('.item:nth-child(' + itemDOMIndex + ')');
         item.querySelector('a span').innerHTML = itemData.label;
         let link = item.querySelector('a');
         link.href = itemData.url;

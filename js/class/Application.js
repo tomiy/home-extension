@@ -69,7 +69,7 @@ export default class $Application {
         this.initial.y = e.clientY;
         this.cur = label.parentNode;
 
-        this.cur.style.boxShadow = "0px 10px 5px 0px rgba(0, 0, 0, 0.5)";
+        this.cur.classList.add('dragged');
     }
 
     move(e) {
@@ -77,7 +77,6 @@ export default class $Application {
             let offsetX = e.clientX - this.initial.x;
             let offsetY = e.clientY - this.initial.y;
             this.cur.style.transform = 'translate3d(' + offsetX + 'px, ' + offsetY + 'px, 0)';
-            this.cur.style.zIndex = '1000';
         }
     }
 
@@ -104,9 +103,8 @@ export default class $Application {
                 target.appendChild(this.cur);
             }
 
+            this.cur.classList.remove('dragged');
             this.cur.style.transform = null;
-            this.cur.style.zIndex = null;
-            this.cur.style.boxShadow = null;
             this.cur = null;
         }
     }
