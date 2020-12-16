@@ -209,6 +209,7 @@ form span {
 
 .item,
 .ctxmenu-item {
+    position: relative;
     transition: all 0.2s linear;
     cursor: pointer;
     padding: 2px;
