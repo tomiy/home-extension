@@ -87,6 +87,12 @@ form span {
     border-color: black;
 }
 
+#sectionsplit {
+    position: absolute;
+    top: 35px;
+    left: 5px;
+}
+
 #overlay,
 #container {
     display: flex;
