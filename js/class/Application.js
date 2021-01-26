@@ -87,8 +87,8 @@ export default class $Application {
             let target = $Utils
                 .elementsFromPoint(curRect.left + curRect.width / 2, curRect.top + curRect.height / 2)
                 .filter(el => el.matches('.drag-container')).pop();
-            if (target) {
 
+            if (target) {
                 let targetId = target.id;
 
                 target.id = this.cur.parentNode.id;
