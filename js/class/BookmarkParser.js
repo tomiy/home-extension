@@ -4,14 +4,65 @@ export default class $BookmarkParser {
     static parse(file) {
         if (file) {
             let reader = new FileReader();
-            let bookmarks = {};
             reader.readAsText(file, 'UTF-8');
             reader.onerror = () => console.error('error reading file');
             reader.onload = e => {
-                bookmarks = $BookmarkParser.toJson(e.target.result);
-                console.log(bookmarks);
+                let json = { sections: [] };
+                let bookmarks = $BookmarkParser.toJson(e.target.result);
+                json.sections.push(...$BookmarkParser.toSections(bookmarks));
+
+                localStorage.setItem('json', JSON.stringify(json));
+                location.reload();
             }
         }
+    }
+
+    static toSections(bookmarks) {
+        let sections = [];
+        let topLevelBookmarksSection = {
+            color: '123',
+            bind: 'a' + Date.now(),
+            label: 'Top level bookmarks',
+            items: []
+        };
+
+        sections.push(...$BookmarkParser.fillSections(bookmarks.children, topLevelBookmarksSection));
+
+        return sections;
+    }
+
+    static fillSections(bookmarks, parentSection, depth = 0) {
+        let sections = [parentSection];
+
+        bookmarks.forEach(item => {
+            if (item.type == 'bookmark') {
+                parentSection.items.push({
+                    label: item.name,
+                    url: item.url
+                });
+            }
+
+            if (item.type == 'folder') {
+                let newSection = parentSection;
+                if (depth == 0 || document.querySelector('#split').checked) {
+                    newSection = {
+                        color: '123',
+                        bind: item.id,
+                        label: item.name,
+                        items: []
+                    };
+                }
+
+                let childrenSections = $BookmarkParser.fillSections(item.children, newSection, depth + 1);
+
+                if (newSection != parentSection) {
+                    sections.push(...childrenSections);
+                }
+
+            }
+        });
+
+        return sections;
     }
 
     static toJson(fileData) {
