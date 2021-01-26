@@ -1,5 +1,6 @@
 import $Application from './class/Application.js';
 import $Event from './class/Event.js';
+import $BookmarkParser from './class/BookmarkParser.js';
 import $Popup from './class/form/Popup.js';
 import $Utils from './class/Utils.js';
 import $Menu from "./class/menu/Menu.js";
@@ -28,9 +29,12 @@ documentEvents.register('DOMContentLoaded', () => {
 
         app.addSectionTile();
 
+        const importEvent = new $Event(document.querySelector('#import'));
         const addSectionEvent = new $Event(document.querySelector('#add-section'));
         const popupCloseEvent = new $Event(document.querySelector('#popup-close'));
         const popupSubmitEvent = new $Event(document.querySelector('#popup-submit'));
+
+        importEvent.register('change', e => $BookmarkParser.parse(e.target.files[0]));
 
         //popup default events
         popupCloseEvent.register('click', () => popup.close());
