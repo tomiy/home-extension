@@ -9,6 +9,7 @@
     },
     "permissions": [
         "storage",
+        "tabs",
         "file://*/*"
     ],
     "browser_action": {
