@@ -23,6 +23,8 @@ export default class $Application {
             }]
         }]
     };
+    //new tabs option
+    newtabs;
 
     getData() {
         let JSONdata = localStorage.getItem('json');
@@ -106,6 +108,41 @@ export default class $Application {
             this.cur.classList.remove('dragged');
             this.cur.style.transform = null;
             this.cur = null;
+        }
+    }
+
+    loadNewtabsOption() {
+        this.newtabs = localStorage.getItem('newtabs') === 'true';
+
+        let newtabsDOM = document.querySelector('#newtabs');
+        if (newtabsDOM && this.newtabs) {
+            newtabsDOM.checked = 'true';
+        }
+    }
+
+    changeNewtabsOption() {
+        let newtabs = document.querySelector('#newtabs').checked;
+
+        localStorage.setItem('newtabs', newtabs);
+        this.newtabs = newtabs;
+    }
+
+    openLink(item, e) {
+        e.preventDefault();
+
+        if ($Utils.isOptionsEnv()) {
+            return;
+        }
+
+        let url = item.querySelector('a').href;
+
+        if (this.newtabs) {
+            chrome.tabs.create({ url: url });
+        } else {
+            chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+                let tab = tabs[0];
+                chrome.tabs.update(tab.id, { url: url });
+            });
         }
     }
 }

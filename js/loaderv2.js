@@ -14,6 +14,7 @@ app.getData();
 documentEvents.register('DOMContentLoaded', () => {
     //load DOM and move events
     app.loadDOM();
+    app.loadNewtabsOption();
 
     //delegated because indefinite amount of elements
     documentEvents.delegate('mousedown', (label, e) => app.pickup(label, e), '.label');
@@ -21,6 +22,8 @@ documentEvents.register('DOMContentLoaded', () => {
     documentEvents.register('mouseup', () => app.drop());
 
     documentEvents.register('dragstart', e => e.preventDefault());
+
+    documentEvents.delegate('click', (item, e) => app.openLink(item, e), '.item');
 
     //load Popup and option events
     if ($Utils.isOptionsEnv()) {
@@ -57,5 +60,9 @@ documentEvents.register('DOMContentLoaded', () => {
             alert('Please allow file access');
             chrome.tabs.create({ url: 'chrome://extensions/?id=' + location.hostname });
         });
+    } else {
+        const newtabsEvent = new $Event(document.querySelector('#newtabs'));
+
+        newtabsEvent.register('change', () => app.changeNewtabsOption());
     }
 });

@@ -76,7 +76,7 @@ form span {
     padding: 5px 8px;
     outline: none;
     white-space: nowrap;
-    -webkit-user-select: none;
+    user-select: none;
     cursor: pointer;
     text-shadow: 1px 1px #fff;
     font-weight: 700;
@@ -87,8 +87,12 @@ form span {
     border-color: black;
 }
 
-#sectionsplit {
+#sectionsplit,
+#sectionnewtabs {
     position: absolute;
+}
+
+#sectionsplit {
     top: 35px;
     left: 5px;
 }
