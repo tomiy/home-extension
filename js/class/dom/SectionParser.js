@@ -65,7 +65,6 @@ export default class $SectionParser {
             .content(itemData.label);
         let url = new $DOMElement('a')
             .attribute('href', itemData.url)
-            .attribute('target', '_blank')
             .child(urltxt);
         let item = new $DOMElement('div')
             .class('item')
