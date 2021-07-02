@@ -1,9 +1,8 @@
-import $JSONObject from './JSONObject.js';
-import $Application from './Application.js';
+import $Utils from './Utils.js';
 
 export default class $Export {
-    static export() {
-        let JSONdata = localStorage.getItem('json');
+    static export () {
+        let JSONdata = localStorage.getItem('json') || JSON.stringify($Utils.defaultdata);
         this.download(JSONdata);
     }
 
