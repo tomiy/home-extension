@@ -1,4 +1,16 @@
 export default class $Utils {
+    static defaultdata = {
+        sections: [{
+            color: '123',
+            bind: 'a' + Date.now(),
+            label: 'Example section',
+            items: [{
+                label: 'Example item',
+                url: 'http://www.example.com'
+            }]
+        }]
+    };
+
     static elementsFromPoint(x, y, l) {
         let e = document.elementFromPoint(x, y);
         if (e !== l && e !== document.documentElement && !e.dataset.peventblocker) {

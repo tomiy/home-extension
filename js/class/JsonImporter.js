@@ -1,4 +1,4 @@
-export default class $BookmarkParser {
+export default class $JsonImporter {
     static import(file){
         if (file) {
             let reader = new FileReader();
