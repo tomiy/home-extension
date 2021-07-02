@@ -12,24 +12,13 @@ export default class $Application {
     };
     //localStorage JSON
     data;
-    defaultdata = {
-        sections: [{
-            color: '123',
-            bind: 'a' + Date.now(),
-            label: 'Example section',
-            items: [{
-                label: 'Example item',
-                url: 'http://www.example.com'
-            }]
-        }]
-    };
     //new tabs option
     newtabs;
 
     getData() {
         let JSONdata = localStorage.getItem('json');
         if (!JSONdata) {
-            this.data = $JSONObject.fromObject(this.defaultdata);
+            this.data = $JSONObject.fromObject($Utils.defaultdata);
         } else {
             this.data = $JSONObject.fromJSON(JSONdata);
         }
