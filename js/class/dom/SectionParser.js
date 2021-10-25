@@ -60,7 +60,7 @@ export default class $SectionParser {
 
         let icon = new $DOMElement('img')
             .attribute('loading', 'lazy')
-            .attribute('src', 'https://favicons.githubusercontent.com/' + host.hostname);
+            .attribute('src', 'https://www.google.com/s2/favicons?domain=' + host.hostname);
         let urltxt = new $DOMElement('span')
             .content(itemData.label);
         let url = new $DOMElement('a')
@@ -91,7 +91,7 @@ export default class $SectionParser {
         let link = item.querySelector('a');
         link.href = itemData.url;
         let host = $SectionParser.getURLWithFallback(itemData.url);
-        item.querySelector('img').src = 'https://favicons.githubusercontent.com/' + host.hostname;
+        item.querySelector('img').src = 'https://www.google.com/s2/favicons?domain=' + host.hostname;
     }
 
     static getSectionId(obj, sectionBind) {
