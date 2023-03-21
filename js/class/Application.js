@@ -15,6 +15,8 @@ export default class $Application {
     //new tabs option
     newtabs;
 
+    justDropped;
+
     getData() {
         let JSONdata = localStorage.getItem('json');
         if (!JSONdata) {
@@ -97,6 +99,7 @@ export default class $Application {
             this.cur.classList.remove('dragged');
             this.cur.style.transform = null;
             this.cur = null;
+            this.justDropped = true;
         }
     }
 
@@ -119,18 +122,19 @@ export default class $Application {
     openLink(item, e) {
         e.preventDefault();
 
-        if ($Utils.isOptionsEnv()) {
+        if ($Utils.isOptionsEnv() || this.justDropped) {
+            this.justDropped = false;
             return;
         }
 
         let url = item.querySelector('a').href;
 
         if (this.newtabs) {
-            chrome.tabs.create({ url: url });
+            browser.tabs.create({ url: url });
         } else {
-            chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+            browser.tabs.query({ active: true, currentWindow: true }, function(tabs) {
                 let tab = tabs[0];
-                chrome.tabs.update(tab.id, { url: url });
+                browser.tabs.update(tab.id, { url: url });
             });
         }
     }

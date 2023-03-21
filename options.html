@@ -10,14 +10,17 @@
 </head>
 
 <body>
+    <label for="import" class="button">Import bookmarks</label>
     <input type="file" id="import" accept=".html" />
-    <button id="export" type="button">Export json</button>
+    <button id="export" type="button" class="button">Export json</button>
+    <label for="import-json" class="button">Import json</label>
     <input type="file" id="import-json" accept=".json" />
     <div id="sectionsplit">
         <input type="checkbox" id="split"><label for="split">Make every subfolder a section</label>
     </div>
     <div id="overlay" data-peventblocker="1"></div>
     <div id="ctxmenu" data-peventblocker="1"></div>
+    <div style="margin-bottom: 130px"></div>
     <div id="container"></div>
     <script type="module" env="options" src="./js/loaderv2.js"></script>
 </body>

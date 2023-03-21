@@ -1,8 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
 body,
 html {
+    font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    height: 100%;
 }
 
 body {
@@ -57,24 +59,18 @@ form span {
 
 /* ids */
 
-#import {
+label[for="import"] {
     position: absolute;
     top: 0;
     left: 0;
 }
 
-#import::before {
-    content: 'Import bookmarks';
-}
-
-#import-json::-webkit-file-upload-button,
-#import::-webkit-file-upload-button {
+#import-json,
+#import {
     display: none;
 }
 
-#import-json::before,
-#import::before,
-#export {
+.button {
     display: inline-block;
     border: 1px solid #999;
     border-radius: 3px;
@@ -90,9 +86,7 @@ form span {
     background: white;
 }
 
-#import-json:hover::before,
-#import:hover::before,
-#export:hover {
+.button:hover {
     border-color: black;
 }
 
@@ -112,14 +106,10 @@ form span {
     left: 0;
 }
 
-#import-json {
+label[for="import-json"] {
     position: absolute;
     top: 35px;
     left: 0;
-}
-
-#import-json::before {
-    content: 'Import json ';
 }
 
 #overlay,
@@ -134,7 +124,6 @@ form span {
     min-width: 200px;
     background: white;
     border: 1px solid black;
-    text-align: center;
     z-index: 2;
     box-shadow: none;
     /* for click events */
@@ -170,7 +159,7 @@ form span {
 #container {
     flex-wrap: wrap;
     margin: 20px 0;
-    width: 750px;
+    width: 600px;
 }
 
 #overlay {
@@ -279,7 +268,7 @@ form span {
     cursor: pointer;
     padding: 2px;
     height: 20px;
-    line-height: 20px;
+    text-align: center;
 }
 
 .item:nth-child(odd) {
@@ -297,6 +286,7 @@ form span {
 
 .item img {
     position: absolute;
+    top: 0;
     left: 0;
     height: inherit;
 }

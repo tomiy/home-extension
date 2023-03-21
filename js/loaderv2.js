@@ -60,12 +60,6 @@ documentEvents.register('DOMContentLoaded', () => {
         //menu events
         documentEvents.delegate('contextmenu', (label, e) => menu.open(e, 'section', label), '.label');
         documentEvents.delegate('contextmenu', (item, e) => menu.open(e, 'item', item), '.item');
-
-        chrome.extension.isAllowedFileSchemeAccess((yes) => {
-            if (yes) return;
-            alert('Please allow file access');
-            chrome.tabs.create({ url: 'chrome://extensions/?id=' + location.hostname });
-        });
     } else {
         const newtabsEvent = new $Event(document.querySelector('#newtabs'));
 
